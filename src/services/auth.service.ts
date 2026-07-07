@@ -3,6 +3,11 @@ import type { User } from '../types/user.types';
 const USERS_KEY = 'users';
 const CURRENT_USER_KEY = 'currentUser';
 
+// Returns true if a user is currently logged in.
+export function isAuthenticated(): boolean {
+  return getCurrentUser() !== null;
+}
+
 // Returns all registered users.
 export function getUsers(): User[] {
   const users = localStorage.getItem(USERS_KEY);
@@ -25,6 +30,18 @@ export function getCurrentUser(): User | null {
 // Saves the logged-in user.
 export function saveCurrentUser(user: User) {
   localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+}
+
+// Synchronizes the updated user with localStorage.
+export function updateUser(user: User) {
+  const users = getUsers();
+
+  const updatedUsers = users.map((existingUser) =>
+    existingUser.email === user.email ? user : existingUser
+  );
+
+  saveUsers(updatedUsers);
+  saveCurrentUser(user);
 }
 
 // Removes the logged-in user.

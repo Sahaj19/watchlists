@@ -6,6 +6,7 @@ import App from './App';
 import { ThemeProvider } from './context/ThemeContext';
 import { useTheme } from './hooks/useTheme';
 import { AuthProvider } from './context/AuthContext';
+import { WatchlistProvider }  from './context/WatchlistContext';
 
 function AppProvider() {
   const { themeMode } = useTheme();
@@ -21,7 +22,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider>
       <AuthProvider>
-        <AppProvider />
+        <WatchlistProvider>
+          <AppProvider />
+        </WatchlistProvider>
       </AuthProvider>
     </ThemeProvider>
   </StrictMode>

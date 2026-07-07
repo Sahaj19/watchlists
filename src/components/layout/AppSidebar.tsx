@@ -1,21 +1,8 @@
-import {
-  HomeOutlined,
-  HeartOutlined,
-  UserOutlined,
-  BulbOutlined,
-} from '@ant-design/icons';
-
-import {
-  Divider,
-  Flex,
-  Layout,
-  Menu,
-  Switch,
-  Typography,
-} from 'antd';
-
-import { NavLink, useLocation } from 'react-router-dom';
-
+import { useState } from 'react';
+import { HomeOutlined, HeartOutlined, UserOutlined, BulbOutlined } from '@ant-design/icons';
+import { Button, Divider, Flex, Layout, Menu, Modal, Switch, Typography } from 'antd';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import AuthenticationRequiredModal from '../auth/AuthenticationRequiredModal';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -24,9 +11,15 @@ const { Title, Text } = Typography;
 
 function AppSidebar() {
   const location = useLocation();
-
+  const navigate = useNavigate();
   const { themeMode, toggleTheme } = useTheme();
-  const { currentUser } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const {
+    currentUser,
+    logout,
+    isAuthenticated,
+  } = useAuth();
 
   const menuItems = [
     {
@@ -37,11 +30,38 @@ function AppSidebar() {
     {
       key: '/watchlist',
       icon: <HeartOutlined />,
-      label: <NavLink to="/watchlist">My Watchlist</NavLink>,
+      label: (
+        <span onClick={handleWatchlistClick}>My Watchlist</span>
+      )
     },
   ];
 
+  function handleWatchlistClick() {
+    if (!isAuthenticated) {
+      setShowAuthModal(true);
+      return;
+    }
+    navigate('/watchlist');
+  }
+
+  function showLogoutConfirmation() {
+    Modal.confirm({
+      title: 'Logout',
+      content: 'Are you sure you want to logout?',
+      okText: 'Logout',
+      okButtonProps: {
+        danger: true,
+      },
+      cancelText: 'Cancel',
+      onOk() {
+        logout();
+        navigate('/');
+      },
+    });
+  }
+
   return (
+    <>
     <Sider
       width={260}
       theme={themeMode}
@@ -119,7 +139,7 @@ function AppSidebar() {
       {/* User */}
       <Flex
         vertical
-        gap={4}
+        gap={12}
         style={{
           padding: 24,
         }}
@@ -143,13 +163,43 @@ function AppSidebar() {
           </Text>
         </Flex>
 
-        <Text type="secondary">
-          {currentUser
-            ? 'Welcome back!'
-            : 'Login to save your watchlist.'}
-        </Text>
+        {isAuthenticated ? (
+          <Button
+            danger
+            block
+            onClick={showLogoutConfirmation}
+          >
+            Logout
+          </Button>
+        ) : (
+          <>
+            <Button
+              type="primary"
+              block
+              onClick={() => navigate('/login')}
+            >
+              Login
+            </Button>
+
+            <Button
+              block
+              onClick={() => navigate('/signup')}
+            >
+              Create Account
+            </Button>
+          </>
+        )}
       </Flex>
     </Sider>
+
+    {/* Authentication Required Modal */}
+    <AuthenticationRequiredModal
+      open={showAuthModal}
+      onCancel={() =>
+          setShowAuthModal(false)
+      }
+  />
+    </>
   );
 }
 

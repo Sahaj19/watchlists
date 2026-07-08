@@ -7,7 +7,6 @@ import {
   Button,
   Card,
   Flex,
-  Tag,
   Typography,
 } from 'antd';
 
@@ -59,13 +58,14 @@ function WatchlistMovieCard({
             {movie.Year}
           </Text>
 
-          <Tag
+          <Text
+            type="secondary"
             style={{
-              width: 'fit-content',
+              fontSize: 13,
             }}
           >
-            {movie.Genre.split(',')[0].trim()}
-          </Tag>
+          {movie.Genre.replaceAll(',', ' •')}
+          </Text>
         </Flex>
 
         <Button

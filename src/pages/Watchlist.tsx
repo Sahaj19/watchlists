@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Flex, Modal, Typography } from 'antd';
+import { Flex, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import EmptyState from '../components/common/EmptyState';
 import WatchlistMovieCard from '../components/watchlist/WatchlistMovieCard';
-
+import ConfirmationDialog from '../components/common/ConfirmationDialog';
 import { useWatchlist } from '../hooks/useWatchlist';
 
 import { getMovieDetails } from '../services/movie.service';
@@ -28,6 +28,7 @@ function Watchlist() {
 
   const [movies, setMovies] = useState<MovieDetails[]>([]);
   const [loading, setLoading] = useState(false);
+  const [movieToRemove, setMovieToRemove] = useState<MovieDetails | null>(null);
 
   useEffect(() => {
     loadMovies();
@@ -69,26 +70,24 @@ function Watchlist() {
   }
 
   function handleRemove(movie: MovieDetails) {
-    Modal.confirm({
-      title: 'Remove from Watchlist',
-      content: `Are you sure you want to remove "${movie.Title}" from your watchlist?`,
-      okText: 'Remove',
-      okButtonProps: {
-        danger: true,
-      },
-      cancelText: 'Cancel',
+    setMovieToRemove(movie);
+  }
 
-      onOk() {
-        removeMovie(movie.imdbID);
+  function confirmRemoveMovie() {
+    if (!movieToRemove) {
+      return;
+    }
 
-        setMovies((previousMovies) =>
-          previousMovies.filter(
-            (currentMovie) =>
-              currentMovie.imdbID !== movie.imdbID
-          )
-        );
-      },
-    });
+    removeMovie(movieToRemove.imdbID);
+
+    setMovies((previousMovies) =>
+      previousMovies.filter(
+        (movie) =>
+          movie.imdbID !== movieToRemove.imdbID
+      )
+    );
+
+    setMovieToRemove(null);
   }
 
   if (loading) {
@@ -96,6 +95,7 @@ function Watchlist() {
   }
 
   return (
+    <>
     <Flex
       vertical
       gap={24}
@@ -130,6 +130,18 @@ function Watchlist() {
         </Flex>
       )}
     </Flex>
+
+    {/* Remove from Watchlist Confirmation */}
+    <ConfirmationDialog
+      open={Boolean(movieToRemove)}
+      title="Remove Movie"
+      content={`Are you sure you want to remove "${movieToRemove?.Title}" from your watchlist?`}
+      confirmText="Yes, Remove"
+      danger
+      onConfirm={confirmRemoveMovie}
+      onCancel={() => setMovieToRemove(null)}
+    />
+    </>
   );
 }
 

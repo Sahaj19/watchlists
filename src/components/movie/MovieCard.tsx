@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Button, Card, Flex, Modal, Typography } from 'antd';
 import { PlusOutlined, CheckOutlined } from "@ant-design/icons";
 import type { MovieSummary } from "../../types/movie.types";
 import Poster from "../common/Poster";
+import ConfirmationDialog from '../common/ConfirmationDialog';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../hooks/useAuth';
 import { useWatchlist } from '../../hooks/useWatchlist';
@@ -17,6 +19,7 @@ function MovieCard({ movie }: MovieCardProps) {
   const { addMovie, isMovieInWatchlist, removeMovie } = useWatchlist();
   const { isAuthenticated } = useAuth();
   const isSaved = isMovieInWatchlist(movie.imdbID);
+  const [showRemoveConfirmation, setShowRemoveConfirmation] = useState(false);
 
   // add movie handler
   function handleAddMovie(event: React.MouseEvent<HTMLButtonElement>) {
@@ -25,24 +28,13 @@ function MovieCard({ movie }: MovieCardProps) {
   }
 
   // remove movie handler
-  function handleRemoveMovie(event: React.MouseEvent<HTMLButtonElement>) {
-    event.stopPropagation();
-
-    Modal.confirm({
-      title: 'Remove Movie',
-      content: `Are you sure you want to remove "${movie.Title}" from your watchlist?`,
-      okText: 'Remove',
-      okButtonProps: {
-        danger: true,
-      },
-      cancelText: 'Cancel',
-      onOk() {
-        removeMovie(movie.imdbID);
-      },
-    });
+  function handleRemoveMovie() {
+    removeMovie(movie.imdbID);
+    setShowRemoveConfirmation(false);
   }
 
   return (
+    <>
     <Card
       hoverable
       cover={<Poster src={movie.Poster} alt={movie.Title} />}
@@ -87,7 +79,10 @@ function MovieCard({ movie }: MovieCardProps) {
             <Button
               block
               icon={<CheckOutlined />}
-              onClick={handleRemoveMovie}
+              onClick={(event) => {
+                event.stopPropagation();
+                setShowRemoveConfirmation(true);
+              }}
             >
               Saved
             </Button>
@@ -104,6 +99,18 @@ function MovieCard({ movie }: MovieCardProps) {
         )}
       </Flex>
     </Card>
+
+    {/* Remove from Watchlist Confirmation */}
+    <ConfirmationDialog
+      open={showRemoveConfirmation}
+      title="Remove Movie"
+      content={`Are you sure you want to remove "${movie.Title}" from your watchlist?`}
+      confirmText="Yes, Remove"
+      danger
+      onConfirm={handleRemoveMovie}
+      onCancel={() => setShowRemoveConfirmation(false)}
+    />
+    </>
   );
 }
 

@@ -12,6 +12,7 @@ import {
 } from 'antd';
 
 import type { MovieDetails } from '../../types/movie.types';
+import Poster from '../common/Poster';
 
 const { Title, Text } = Typography;
 
@@ -34,20 +35,7 @@ function WatchlistMovieCard({
   return (
     <Card
       hoverable
-      cover={
-        <img
-          src={
-            movie.Poster !== 'N/A'
-              ? movie.Poster
-              : '/placeholder.png'
-          }
-          alt={movie.Title}
-          style={{
-            height: 420,
-            objectFit: 'cover',
-          }}
-        />
-      }
+      cover={<Poster src={movie.Poster} alt={movie.Title} />}
       onClick={() => onViewDetails(movie)}
     >
       <Flex

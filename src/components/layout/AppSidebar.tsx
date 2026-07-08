@@ -3,8 +3,10 @@ import { HomeOutlined, HeartOutlined, UserOutlined, BulbOutlined } from '@ant-de
 import { Button, Divider, Flex, Layout, Menu, Modal, Switch, Typography } from 'antd';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import AuthenticationRequiredModal from '../auth/AuthenticationRequiredModal';
+import ConfirmationDialog from '../common/ConfirmationDialog';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
+import { APP_NAME } from '../../utils/constants';
 
 const { Sider } = Layout;
 const { Title, Text } = Typography;
@@ -14,6 +16,7 @@ function AppSidebar() {
   const navigate = useNavigate();
   const { themeMode, toggleTheme } = useTheme();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
 
   const {
     currentUser,
@@ -44,20 +47,10 @@ function AppSidebar() {
     navigate('/watchlist');
   }
 
-  function showLogoutConfirmation() {
-    Modal.confirm({
-      title: 'Logout',
-      content: 'Are you sure you want to logout?',
-      okText: 'Logout',
-      okButtonProps: {
-        danger: true,
-      },
-      cancelText: 'Cancel',
-      onOk() {
-        logout();
-        navigate('/');
-      },
-    });
+  function handleLogout() {
+    logout();
+    navigate('/');
+    setShowLogoutConfirmation(false);
   }
 
   return (
@@ -88,7 +81,7 @@ function AppSidebar() {
             margin: 0,
           }}
         >
-          🎬 Watchlists
+          🎬 {APP_NAME}
         </Title>
 
         <Text type="secondary">
@@ -167,7 +160,7 @@ function AppSidebar() {
           <Button
             danger
             block
-            onClick={showLogoutConfirmation}
+            onClick={() => setShowLogoutConfirmation(true)}
           >
             Logout
           </Button>
@@ -198,7 +191,18 @@ function AppSidebar() {
       onCancel={() =>
           setShowAuthModal(false)
       }
-  />
+    />
+
+    {/* Logout Confirmation Dialog */}
+    <ConfirmationDialog
+      open={showLogoutConfirmation}
+      title="Logout"
+      content="Are you sure you want to logout?"
+      confirmText="Logout"
+      danger
+      onConfirm={handleLogout}
+      onCancel={() => setShowLogoutConfirmation(false)}
+    />
     </>
   );
 }

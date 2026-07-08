@@ -6,6 +6,7 @@ import EmptyState from '../components/common/EmptyState';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import MovieGrid from '../components/movie/MovieGrid';
 import type { MovieSearchResult } from '../types/movie.types';
+import { MOVIES_PER_PAGE } from '../utils/constants';
 
 function Home() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -83,7 +84,7 @@ function Home() {
     {!loading && searchResult && (
       <Pagination
         current={currentPage}
-        pageSize={10}
+        pageSize={MOVIES_PER_PAGE}
         total={Number(searchResult.totalResults)}
         onChange={handlePageChange}
         style={{

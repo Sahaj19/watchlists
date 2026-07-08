@@ -1,7 +1,8 @@
+import { useState } from 'react';
+import ConfirmationDialog from '../common/ConfirmationDialog';
+import { useWatchlist } from '../../hooks/useWatchlist';
 import { Button, Flex, Tag, Typography } from 'antd';
-
 import Poster from '../common/Poster';
-
 import type { MovieDetails } from '../../types/movie.types';
 
 const { Title, Text } = Typography;
@@ -11,7 +12,23 @@ interface MovieHeroProps {
 }
 
 function MovieHero({ movie }: MovieHeroProps) {
+  const [showRemoveConfirmation, setShowRemoveConfirmation] = useState(false);
+  const { addMovie, removeMovie, isMovieInWatchlist } = useWatchlist();
+  const isSaved = isMovieInWatchlist(movie.imdbID);
+
+  // add movie handler
+  function handleAddMovie() {
+    addMovie(movie.imdbID);
+  }
+
+  // remove movie handler
+  function handleRemoveMovie() {
+    removeMovie(movie.imdbID);
+    setShowRemoveConfirmation(false);
+  }
+
   return (
+    <>
     <Flex wrap gap={32} style={{ width: '100%', padding: 32 }}>
       <Poster
         src={movie.Poster}
@@ -33,9 +50,20 @@ function MovieHero({ movie }: MovieHeroProps) {
         </Text>
 
         <Flex wrap gap={12} style={{ marginTop: 16 }}>
-          <Button type="primary">
-            Add to Watchlist
-          </Button>
+          {isSaved ? (
+            <Button
+              onClick={() => setShowRemoveConfirmation(true)}
+            >
+              Saved
+            </Button>
+          ) : (
+            <Button
+              type="primary"
+              onClick={handleAddMovie}
+            >
+              Add to Watchlist
+            </Button>
+          )}
 
           <Button
             href={`https://www.imdb.com/title/${movie.imdbID}`}
@@ -46,6 +74,17 @@ function MovieHero({ movie }: MovieHeroProps) {
         </Flex>
       </Flex>
     </Flex>
+
+    <ConfirmationDialog
+      open={showRemoveConfirmation}
+      title="Remove from Watchlist"
+      content={`Are you sure you want to remove "${movie.Title}" from your watchlist?`}
+      confirmText="Yes, Remove"
+      danger
+      onConfirm={handleRemoveMovie}
+      onCancel={() => setShowRemoveConfirmation(false)}
+    />
+    </>
   );
 }
 

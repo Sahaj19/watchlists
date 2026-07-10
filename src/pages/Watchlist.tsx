@@ -11,6 +11,7 @@ import type { MovieDetails } from '../types/movie.types';
 import WatchlistFilters, { type WatchlistFiltersValue } from '../components/watchlist/WatchlistFilters';
 import { notificationService } from '../services/notification.service';
 import { applyWatchlistFilters } from '../utils/watchlistFiltersLogic';
+import ErrorState from '../components/common/ErrorState';
 
 const { Title } = Typography;
 
@@ -23,6 +24,7 @@ function Watchlist() {
     toggleWatched,
   } = useWatchlist();
 
+  const [error, setError] = useState(false);
   const [movies, setMovies] = useState<MovieDetails[]>([]);
   const [loading, setLoading] = useState(false);
   const [movieToRemove, setMovieToRemove] = useState<MovieDetails | null>(null);
@@ -74,6 +76,7 @@ function Watchlist() {
   async function loadMovies() {
     try {
       setLoading(true);
+      setError(false);
 
       const responses = await Promise.all(
         watchlist.map((movie) =>
@@ -89,8 +92,9 @@ function Watchlist() {
       );
 
       setMovies(validMovies);
-    } catch (error) {
-      notificationService.error('Unable to Load Watchlist', 'Unable to fetch movie details. Please try again later.');
+    } catch {
+      setError(true);
+      notificationService.error('Unable to Load Watchlist', 'Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -153,6 +157,16 @@ function Watchlist() {
 
     setFilters(defaultFilters);
     setAppliedFilters(defaultFilters);
+  }
+
+  if (error) {
+    return (
+      <ErrorState
+        title="Unable to Load Watchlist"
+        description="Something went wrong while loading your watchlist."
+        onRetry={loadMovies}
+      />
+    );
   }
 
    if (loading) {

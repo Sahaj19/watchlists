@@ -6,6 +6,7 @@ import MovieDetailsSkeleton from '../components/common/MovieDetailsSkeleton';
 import { getMovieDetails } from '../services/movie.service';
 import type { MovieDetails as MovieDetailsType } from '../types/movie.types';
 import EmptyState from '../components/common/EmptyState';
+import ErrorState from '../components/common/ErrorState';
 import { notificationService } from '../services/notification.service';
 import MovieHero from '../components/movie/MovieHero';
 import MovieRatings from '../components/movie/MovieRatings';
@@ -36,8 +37,9 @@ function MovieDetails() {
         setMovie(null);
       }
     } catch {
+      setMovie(null);
       setError(true);
-      notificationService.error('Error', 'Unable to fetch movie details. Please try again later.');
+      notificationService.error('Unable to Load Movie', 'Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -49,7 +51,11 @@ function MovieDetails() {
 
   if (error) {
     return (
-      <EmptyState description="Unable to load movie details." />
+      <ErrorState
+        title="Unable to Load Movie"
+        description="Please try again later."
+        onRetry={fetchMovie}
+      />
     );
   }
 

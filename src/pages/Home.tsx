@@ -8,8 +8,10 @@ import MovieGrid from '../components/movie/MovieGrid';
 import { notificationService } from '../services/notification.service';
 import type { MovieSearchResult } from '../types/movie.types';
 import { MOVIES_PER_PAGE } from '../utils/constants';
+import ErrorState from '../components/common/ErrorState';
 
 function Home() {
+  const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [searchResult, setSearchResult] = useState<MovieSearchResult | null>(null);
@@ -32,6 +34,7 @@ function Home() {
 
     try {
       setLoading(true);
+      setError(false);
 
       const response = await searchMovies(searchTerm, page);
 
@@ -44,7 +47,8 @@ function Home() {
       } else {
         setSearchResult(null);
       }
-    } catch (error) {
+    } catch {
+      setError(true);
       notificationService.error('Search Failed', 'Unable to fetch movies. Please try again.');
     } finally {
       setLoading(false);
@@ -62,6 +66,16 @@ function Home() {
 
     await fetchMovies(page);
 }
+
+  if (error) {
+    return (
+      <ErrorState
+        title="Unable to Load Movies"
+        description="Please check your internet connection and try again."
+        onRetry={() => fetchMovies(currentPage)}
+      />
+    );
+  }
 
  return (
   <Flex vertical gap={24}>

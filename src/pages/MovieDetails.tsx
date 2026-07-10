@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Card, Flex } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import usePageTitle from '../hooks/usePageTitle';
 import MovieDetailsSkeleton from '../components/common/MovieDetailsSkeleton';
 import { getMovieDetails } from '../services/movie.service';
 import type { MovieDetails as MovieDetailsType } from '../types/movie.types';
@@ -15,8 +16,8 @@ import MovieInfo from '../components/movie/MovieInfo';
 function MovieDetails() {
   const navigate = useNavigate();
   const { imdbID } = useParams();
-
   const [movie, setMovie] = useState<MovieDetailsType | null>(null);
+  usePageTitle(movie ? `Watchlists | ${movie.Title}` : 'Watchlists | Movie Details');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 

@@ -1,10 +1,12 @@
 import { HomeOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { Button, Flex, Typography, theme } from 'antd';
+import usePageTitle from '../hooks/usePageTitle';
 import { useNavigate } from 'react-router-dom';
 
 const { Title, Paragraph, Text } = Typography;
 
 function NotFound() {
+  usePageTitle('Watchlists | Page Not Found');
   const navigate = useNavigate();
   const { token } = theme.useToken();
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Flex, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import usePageTitle from '../hooks/usePageTitle';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import EmptyState from '../components/common/EmptyState';
 import WatchlistMovieCard from '../components/watchlist/WatchlistMovieCard';
@@ -16,6 +17,7 @@ import ErrorState from '../components/common/ErrorState';
 const { Title } = Typography;
 
 function Watchlist() {
+  usePageTitle('Watchlists | My Watchlist');
   const navigate = useNavigate();
 
   const {

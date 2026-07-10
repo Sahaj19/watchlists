@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { Flex, Pagination } from 'antd';
+import usePageTitle from '../hooks/usePageTitle';
 import SearchBar from '../components/search/SearchBar';
 import { searchMovies } from '../services/movie.service';
 import EmptyState from '../components/common/EmptyState';
@@ -10,7 +11,9 @@ import type { MovieSearchResult } from '../types/movie.types';
 import { MOVIES_PER_PAGE } from '../utils/constants';
 import ErrorState from '../components/common/ErrorState';
 
+
 function Home() {
+  usePageTitle('Watchlists');
   const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);

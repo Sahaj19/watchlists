@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { HomeOutlined, HeartOutlined, UserOutlined, BulbOutlined } from '@ant-design/icons';
-import { Button, Divider, Flex, Layout, Menu, Modal, Switch, Typography } from 'antd';
+import { Button, Divider, Flex, Layout, Menu, Switch, Typography, Badge } from 'antd';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import AuthenticationRequiredModal from '../auth/AuthenticationRequiredModal';
 import ConfirmationDialog from '../common/ConfirmationDialog';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
+import { useWatchlist } from '../../hooks/useWatchlist';
 import { APP_NAME } from '../../utils/constants';
 
 const { Sider } = Layout;
@@ -15,6 +16,7 @@ function AppSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { themeMode, toggleTheme } = useTheme();
+  const { watchlist } = useWatchlist();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
 
@@ -33,8 +35,19 @@ function AppSidebar() {
     {
       key: '/watchlist',
       icon: <HeartOutlined />,
-      label: (
-        <span onClick={handleWatchlistClick}>My Watchlist</span>
+     label: (
+        <Flex
+          justify="space-between"
+          align="center"
+          style={{ width: '100%' }}
+        >
+          <span onClick={handleWatchlistClick}>My Watchlist</span>
+
+          <Badge
+            count={watchlist.length}
+            size="medium"
+          />
+        </Flex>
       )
     },
   ];

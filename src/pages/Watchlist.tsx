@@ -9,6 +9,7 @@ import { useWatchlist } from '../hooks/useWatchlist';
 import { getMovieDetails } from '../services/movie.service';
 import type { MovieDetails } from '../types/movie.types';
 import WatchlistFilters, { type WatchlistFiltersValue } from '../components/watchlist/WatchlistFilters';
+import { applyWatchlistFilters } from '../utils/watchlistFiltersLogic';
 
 const { Title } = Typography;
 
@@ -33,6 +34,13 @@ function Watchlist() {
     duration: 'all',
   });
 
+  const [appliedFilters, setAppliedFilters] = useState<WatchlistFiltersValue>({
+    search: '',
+    status: 'all',
+    genre: 'all',
+    duration: 'all',
+  });
+
   const genres = Array.from(
     new Set(
       movies.flatMap((movie) =>
@@ -41,6 +49,7 @@ function Watchlist() {
     )
   ).sort();
 
+  // UseEffect-1 (responsible for loading the watchlist movies when the watchlist changes)
   useEffect(() => {
     if (watchlist.length > 0) {
       loadMovies();
@@ -48,7 +57,18 @@ function Watchlist() {
       setMovies([]);
       setFilteredMovies([]);
     }
-  }, [watchlist]);
+  }, [watchlist.length]);
+
+  // UseEffect-2 (responsible for applying filters when the filters change)
+  useEffect(() => {
+    setFilteredMovies(
+      applyWatchlistFilters({
+        movies,
+        watchlist,
+        filters: appliedFilters,
+      })
+    );
+  }, [movies, watchlist, appliedFilters]);
 
   async function loadMovies() {
     try {
@@ -68,7 +88,6 @@ function Watchlist() {
       );
 
       setMovies(validMovies);
-      setFilteredMovies(validMovies);
     } finally {
       setLoading(false);
     }
@@ -91,102 +110,38 @@ function Watchlist() {
       return;
     }
 
+    const updatedMovies = movies.filter(
+      (movie) =>
+        movie.imdbID !== movieToRemove.imdbID
+    );
+
+    setMovies(updatedMovies);
+
     removeMovie(movieToRemove.imdbID);
-
-    setMovies((previousMovies) =>
-      previousMovies.filter(
-        (movie) =>
-          movie.imdbID !== movieToRemove.imdbID
-      )
-    );
-
-    setFilteredMovies((previousMovies) =>
-      previousMovies.filter(
-        (movie) => movie.imdbID !== movieToRemove.imdbID
-      )
-    );
 
     setMovieToRemove(null);
   }
 
-  if (loading) {
-    return <LoadingSkeleton />;
-  }
-
   // Apply filters to the watchlist movies`
   function handleApplyFilters() {
-    let result = [...movies];
-
-    // Search
-    if (filters.search.trim()) {
-      result = result.filter((movie) =>
-        movie.Title.toLowerCase().includes(
-          filters.search.toLowerCase()
-        )
-      );
-    }
-
-    // Status
-    if (filters.status !== 'all') {
-      result = result.filter((movie) => {
-        const watchlistMovie = watchlist.find(
-          (item) => item.imdbID === movie.imdbID
-        );
-
-        return filters.status === 'watched'
-          ? watchlistMovie?.watched
-          : !watchlistMovie?.watched;
-      });
-    }
-
-    // Genre
-    if (filters.genre !== 'all') {
-      result = result.filter((movie) =>
-        movie.Genre.split(', ')
-          .map((genre) => genre.trim())
-          .includes(filters.genre)
-      );
-    }
-
-    // Duration
-    if (filters.duration !== 'all') {
-      result = result.filter((movie) => {
-        const duration = Number(
-          movie.Runtime.split(' ')[0]
-        );
-
-        switch (filters.duration) {
-          case 'short':
-            return duration < 90;
-
-          case 'medium':
-            return duration >= 90 && duration <= 120;
-
-          case 'long':
-            return duration > 120 && duration <= 150;
-
-          case 'epic':
-            return duration > 150;
-
-          default:
-            return true;
-        }
-      });
-    }
-
-    setFilteredMovies(result);
+    setAppliedFilters(filters);
   }
 
   // Reset filters to default values`
   function handleResetFilters() {
-    setFilters({
+    const defaultFilters: WatchlistFiltersValue = {
       search: '',
       status: 'all',
       genre: 'all',
       duration: 'all',
-    });
+    };
 
-    setFilteredMovies(movies);
+    setFilters(defaultFilters);
+    setAppliedFilters(defaultFilters);
+  }
+
+   if (loading) {
+    return <LoadingSkeleton />;
   }
 
   return (

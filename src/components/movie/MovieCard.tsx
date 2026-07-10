@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Button, Card, Flex, Modal, Typography } from 'antd';
+import { Button, Card, Flex, Typography } from 'antd';
 import { PlusOutlined, CheckOutlined } from "@ant-design/icons";
 import type { MovieSummary } from "../../types/movie.types";
 import Poster from "../common/Poster";
 import ConfirmationDialog from '../common/ConfirmationDialog';
+import { notificationService } from '../../services/notification.service';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../hooks/useAuth';
 import { useWatchlist } from '../../hooks/useWatchlist';
@@ -25,12 +26,14 @@ function MovieCard({ movie }: MovieCardProps) {
   function handleAddMovie(event: React.MouseEvent<HTMLButtonElement>) {
     event.stopPropagation();
     addMovie(movie.imdbID);
+    notificationService.success('Movie Added', `"${movie.Title}" has been added to your watchlist.`);
   }
 
   // remove movie handler
   function handleRemoveMovie() {
     removeMovie(movie.imdbID);
     setShowRemoveConfirmation(false);
+    notificationService.success('Movie Removed', `"${movie.Title}" has been removed from your watchlist.`);
   }
 
   return (
@@ -39,15 +42,6 @@ function MovieCard({ movie }: MovieCardProps) {
       hoverable
       cover={<Poster src={movie.Poster} alt={movie.Title} />}
       onClick={() => navigate(`/movie/${movie.imdbID}`)}
-      actions={[
-        <PlusOutlined
-          key="add"
-          onClick={(event) => {
-            event.stopPropagation();
-            // Add to Watchlist (later)
-          }}
-        />,
-      ]}
     >
       <Text strong ellipsis>
         {movie.Title}

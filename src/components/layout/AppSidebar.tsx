@@ -4,6 +4,7 @@ import { Button, Divider, Flex, Layout, Menu, Switch, Typography, Badge } from '
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import AuthenticationRequiredModal from '../auth/AuthenticationRequiredModal';
 import ConfirmationDialog from '../common/ConfirmationDialog';
+import { notificationService } from '../../services/notification.service';
 import { useTheme } from '../../hooks/useTheme';
 import { useAuth } from '../../hooks/useAuth';
 import { useWatchlist } from '../../hooks/useWatchlist';
@@ -64,6 +65,7 @@ function AppSidebar() {
     logout();
     navigate('/');
     setShowLogoutConfirmation(false);
+    notificationService.success('Logged Out', 'You have successfully logged out.');
   }
 
   return (

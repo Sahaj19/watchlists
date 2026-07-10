@@ -1,10 +1,11 @@
 import { useState, useRef } from 'react';
-import { Flex, Pagination, message } from 'antd';
+import { Flex, Pagination } from 'antd';
 import SearchBar from '../components/search/SearchBar';
 import { searchMovies } from '../services/movie.service';
 import EmptyState from '../components/common/EmptyState';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import MovieGrid from '../components/movie/MovieGrid';
+import { notificationService } from '../services/notification.service';
 import type { MovieSearchResult } from '../types/movie.types';
 import { MOVIES_PER_PAGE } from '../utils/constants';
 
@@ -20,7 +21,7 @@ function Home() {
 
   async function fetchMovies(page: number) {
     if (!searchTerm.trim()) {
-      message.warning('Please enter a movie title.');
+      notificationService.warning('Search Required', 'Please enter a movie title.');
       return;
     }
 
@@ -43,6 +44,8 @@ function Home() {
       } else {
         setSearchResult(null);
       }
+    } catch (error) {
+      notificationService.error('Search Failed', 'Unable to fetch movies. Please try again.');
     } finally {
       setLoading(false);
     }

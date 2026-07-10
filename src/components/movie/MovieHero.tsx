@@ -3,6 +3,7 @@ import ConfirmationDialog from '../common/ConfirmationDialog';
 import { useWatchlist } from '../../hooks/useWatchlist';
 import { Button, Flex, Tag, Typography } from 'antd';
 import Poster from '../common/Poster';
+import { notificationService } from '../../services/notification.service';
 import type { MovieDetails } from '../../types/movie.types';
 
 const { Title, Text } = Typography;
@@ -19,12 +20,14 @@ function MovieHero({ movie }: MovieHeroProps) {
   // add movie handler
   function handleAddMovie() {
     addMovie(movie.imdbID);
+    notificationService.success('Movie Added', `"${movie.Title}" has been added to your watchlist.`);
   }
 
   // remove movie handler
   function handleRemoveMovie() {
     removeMovie(movie.imdbID);
     setShowRemoveConfirmation(false);
+    notificationService.success('Movie Removed', `"${movie.Title}" has been removed from your watchlist.`);
   }
 
   return (

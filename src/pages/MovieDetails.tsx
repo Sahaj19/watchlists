@@ -4,10 +4,9 @@ import { Button, Card, Flex } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import MovieDetailsSkeleton from '../components/common/MovieDetailsSkeleton';
 import { getMovieDetails } from '../services/movie.service';
-
 import type { MovieDetails as MovieDetailsType } from '../types/movie.types';
 import EmptyState from '../components/common/EmptyState';
-
+import { notificationService } from '../services/notification.service';
 import MovieHero from '../components/movie/MovieHero';
 import MovieRatings from '../components/movie/MovieRatings';
 import MovieInfo from '../components/movie/MovieInfo';
@@ -38,6 +37,7 @@ function MovieDetails() {
       }
     } catch {
       setError(true);
+      notificationService.error('Error', 'Unable to fetch movie details. Please try again later.');
     } finally {
       setLoading(false);
     }

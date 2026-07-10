@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button, Card, Flex, Form, Input, Typography } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { notificationService } from "../../services/notification.service";
 
 const { Title, Text } = Typography;
 
@@ -18,12 +19,37 @@ function AuthForm({ mode }: AuthFormProps) {
     try {
       setLoading(true);
 
-      const success =
-        mode === "login" ? login(values.email) : signup(values.email);
+      const success = mode === "login" ? login(values.email) : signup(values.email);
 
-      if (success) {
-        navigate("/");
+      if (!success) {
+        if (mode === 'login') {
+          notificationService.error(
+            'Login Failed',
+            'No account found with this email.'
+          );
+        } else {
+          notificationService.warning(
+            'Account Already Exists',
+            'An account with this email already exists.'
+          );
+        }
+
+        return;
       }
+
+      if (mode === 'login') {
+        notificationService.success(
+          'Welcome Back!',
+          'You have successfully logged in.'
+        );
+      } else {
+        notificationService.success(
+          'Account Created',
+          'Your account has been created successfully.'
+        );
+      }
+
+      navigate('/');
     } finally {
       setLoading(false);
     }

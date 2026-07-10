@@ -9,6 +9,7 @@ import { useWatchlist } from '../hooks/useWatchlist';
 import { getMovieDetails } from '../services/movie.service';
 import type { MovieDetails } from '../types/movie.types';
 import WatchlistFilters, { type WatchlistFiltersValue } from '../components/watchlist/WatchlistFilters';
+import { notificationService } from '../services/notification.service';
 import { applyWatchlistFilters } from '../utils/watchlistFiltersLogic';
 
 const { Title } = Typography;
@@ -88,6 +89,8 @@ function Watchlist() {
       );
 
       setMovies(validMovies);
+    } catch (error) {
+      notificationService.error('Unable to Load Watchlist', 'Unable to fetch movie details. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -98,8 +101,18 @@ function Watchlist() {
   }
 
   function handleToggleWatched(movie: MovieDetails) {
-    toggleWatched(movie.imdbID);
+  const watchlistMovie = watchlist.find(
+    (item) => item.imdbID === movie.imdbID
+  );
+
+  toggleWatched(movie.imdbID);
+
+  if (watchlistMovie?.watched) {
+    notificationService.info('Marked as Unwatched', `"${movie.Title}" has been marked as unwatched.`);
+  } else {
+    notificationService.success('Marked as Watched', `"${movie.Title}" has been marked as watched.`);
   }
+}
 
   function handleRemove(movie: MovieDetails) {
     setMovieToRemove(movie);
@@ -118,6 +131,8 @@ function Watchlist() {
     setMovies(updatedMovies);
 
     removeMovie(movieToRemove.imdbID);
+
+    notificationService.success('Movie Removed',`"${movieToRemove.Title}" has been removed from your watchlist.`);
 
     setMovieToRemove(null);
   }

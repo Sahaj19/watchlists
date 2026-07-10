@@ -1,5 +1,6 @@
 import { createContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { ThemeContextType, ThemeMode } from "../types/theme.types";
+import { lightTheme, darkTheme } from "../theme";
 
 const STORAGE_KEY = "theme";
 
@@ -11,6 +12,7 @@ interface ThemeProviderProps {
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [themeMode, setThemeMode] = useState<ThemeMode>("light");
+  const colors = themeMode === "light" ? lightTheme : darkTheme;
 
   // Load saved theme immediately when the application starts.
   useEffect(() => {
@@ -28,7 +30,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     localStorage.setItem(STORAGE_KEY, newTheme);
   };
 
-  const value = useMemo(() => ({ themeMode, toggleTheme }), [themeMode]);
+  const value = useMemo(() => ({ themeMode, toggleTheme, colors }), [themeMode]);
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

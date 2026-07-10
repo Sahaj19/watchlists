@@ -16,7 +16,7 @@ const { Title, Text } = Typography;
 function AppSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { themeMode, toggleTheme } = useTheme();
+  const { themeMode, toggleTheme, colors } = useTheme();
   const { watchlist } = useWatchlist();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
@@ -72,15 +72,14 @@ function AppSidebar() {
     <>
     <Sider
       width={260}
-      theme={themeMode}
+      theme="light"
       style={{
         height: '100vh',
         position: 'sticky',
         top: 0,
-        borderRight:
-          themeMode === 'light'
-            ? '1px solid #f0f0f0'
-            : '1px solid #303030',
+
+        background: colors.sidebar,
+        borderRight: `1px solid ${colors.sidebarBorder}`,
       }}
     >
       {/* Logo */}
@@ -94,12 +93,18 @@ function AppSidebar() {
           level={3}
           style={{
             margin: 0,
+            color: colors.textPrimary,
           }}
         >
           🎬 {APP_NAME}
         </Title>
 
-        <Text type="secondary">
+        <Text 
+          type="secondary"
+          style={{
+            color: colors.textSecondary,
+          }}
+          >
           Find your next favourite movie.
         </Text>
       </Flex>
@@ -109,11 +114,13 @@ function AppSidebar() {
       {/* Navigation */}
       <Menu
         mode="inline"
+        theme="light"
         selectedKeys={[location.pathname]}
         items={menuItems}
         style={{
           border: 'none',
           marginTop: 12,
+          background: colors.sidebar,
         }}
       />
 
@@ -131,9 +138,15 @@ function AppSidebar() {
           align="center"
           gap={8}
         >
-          <BulbOutlined />
+          <BulbOutlined style={{ color: colors.textPrimary }} />
 
-          <Text>Dark Mode</Text>
+          <Text
+            style={{
+              color: colors.textPrimary,
+            }}
+          >
+            Dark Mode
+          </Text>
         </Flex>
 
         <Switch
@@ -156,7 +169,7 @@ function AppSidebar() {
           align="center"
           gap={8}
         >
-          <UserOutlined />
+          <UserOutlined style={{ color: colors.textPrimary }} />
 
           <Text
             strong
@@ -164,6 +177,7 @@ function AppSidebar() {
               tooltip: currentUser?.email,
             }}
             style={{
+              color: colors.textPrimary,
               maxWidth: 170,
             }}
           >

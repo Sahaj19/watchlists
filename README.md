@@ -1,75 +1,93 @@
-# React + TypeScript + Vite
+# 🎬 Movie Watchlist
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React + TypeScript movie discovery application where users can search movies, view detailed information, and maintain a personalized watchlist.
 
-Currently, two official plugins are available:
+Built using React, TypeScript and Ant Design with a strong focus on reusable components, clean architecture, and user experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Features
 
-## React Compiler
+### 🔍 Movie Search
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Search movies using the OMDb API
+- Pagination support
+- Loading skeletons
+- Empty state
+- Error state with retry
 
-## Expanding the ESLint configuration
+### 🎬 Movie Details
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Complete movie information
+- IMDb ratings
+- Metascore
+- Genre
+- Runtime
+- Plot
+- Cast
+- Awards
+- External IMDb link
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### ❤️ Watchlist
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Add movies
+- Remove movies
+- Mark as Watched
+- Mark as Unwatched
+- Dynamic watchlist badge
+- Confirmation before removal
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 🎯 Watchlist Filters
 
-```
+- Search by title
+- Filter by watched status
+- Filter by genre
+- Filter by duration
+- Apply Filters
+- Reset Filters
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 👤 Authentication
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Login
+- Signup
+- Logout
+- Authentication required modal
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 🎨 User Experience
 
-```
+- Dark / Light theme
+- Notification system
+- Loading Skeletons
+- Empty States
+- Error States
+- Confirmation Dialogs
+- Responsive Design
+
+
+## 🛠 Tech Stack
+
+- React
+- TypeScript
+- Vite
+- Ant Design
+- React Router
+- Context API
+- Local Storage
+- OMDb API
+
+
+## 📌 Project Highlights
+
+- Reusable Components
+- Clean Folder Structure
+- Custom Hooks
+- Context API
+- Utility Functions
+- Service Layer
+- Component-based Architecture
+- TypeScript Interfaces
+- Responsive UI
+
+## 👨‍💻 Author
+
+**Sahaj Arora**
+
+Frontend Engineer

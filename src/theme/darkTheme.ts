@@ -24,4 +24,10 @@ export const darkTheme: AppTheme = {
   menuItemSelectedText: '#ffffff',
 
   shadow: '0 8px 24px rgba(0,0,0,.35)',
+
+  white: '#ffffff',
+
+  imdb: '#F5C518',
+  rottenTomatoes: '#FA5238',
+  metascore: '#66CC33',
 };

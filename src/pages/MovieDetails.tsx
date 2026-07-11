@@ -70,7 +70,7 @@ function MovieDetails() {
     <Flex
       vertical
       gap={32}
-      style={{ maxWidth: 1180, margin: '0 auto', width: '100%', padding: '24px 0' }}
+      style={{ maxWidth: 1180, margin: '0 auto', width: '100%', padding: '24px 10px' }}
     >
       <Flex justify="start" wrap gap={16}>
         <Button

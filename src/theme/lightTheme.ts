@@ -24,4 +24,10 @@ export const lightTheme: AppTheme = {
   menuItemSelectedText: '#f33f40',
 
   shadow: '0 8px 24px rgba(0,0,0,.08)',
+
+  white: '#ffffff',
+
+  imdb: '#F5C518',
+  rottenTomatoes: '#FA5238',
+  metascore: '#66CC33',
 };

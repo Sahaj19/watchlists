@@ -22,4 +22,10 @@ export interface AppTheme {
   menuItemSelectedText: string;
 
   shadow: string;
+
+  white: string;
+
+  imdb: string;
+  rottenTomatoes: string;
+  metascore: string;
 }

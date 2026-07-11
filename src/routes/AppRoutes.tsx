@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppLayout from '../components/layout/AppLayout';
+import StandaloneLayout from '../components/layout/StandaloneLayout';
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
@@ -17,13 +18,13 @@ function AppRoutes() {
           <Route path="/watchlist" element={<Watchlist />} />
         </Route>
 
-        {/* Standalone Pages (i.e. pages without the sidebar) */}
-        <Route path="/movie/:imdbID" element={<MovieDetails />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-
-        {/* 404 */}
-        <Route path="*" element={<NotFound />} />
+        {/* Standalone Pages */}
+        <Route element={<StandaloneLayout />}>
+          <Route path="/movie/:imdbID" element={<MovieDetails />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

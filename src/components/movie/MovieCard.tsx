@@ -1,13 +1,19 @@
 import { useState } from "react";
-import { Button, Card, Flex, Typography } from 'antd';
-import { PlusOutlined, CheckOutlined } from "@ant-design/icons";
+import { Badge, Card, Space, Tooltip, Typography } from "antd";
+import {
+  PlusOutlined,
+  CheckCircleFilled,
+  EyeOutlined,
+  DeleteOutlined,
+  CalendarOutlined,
+} from "@ant-design/icons";
 import type { MovieSummary } from "../../types/movie.types";
 import Poster from "../common/Poster";
-import ConfirmationDialog from '../common/ConfirmationDialog';
-import { notificationService } from '../../services/notification.service';
+import ConfirmationDialog from "../common/ConfirmationDialog";
+import { notificationService } from "../../services/notification.service";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from '../../hooks/useAuth';
-import { useWatchlist } from '../../hooks/useWatchlist';
+import { useAuth } from "../../hooks/useAuth";
+import { useWatchlist } from "../../hooks/useWatchlist";
 
 const { Text } = Typography;
 
@@ -23,87 +29,101 @@ function MovieCard({ movie }: MovieCardProps) {
   const [showRemoveConfirmation, setShowRemoveConfirmation] = useState(false);
 
   // add movie handler
-  function handleAddMovie(event: React.MouseEvent<HTMLButtonElement>) {
+  function handleAddMovie(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
     addMovie(movie.imdbID);
-    notificationService.success('Movie Added', `"${movie.Title}" has been added to your watchlist.`);
+    notificationService.success(
+      "Movie Added",
+      `"${movie.Title}" has been added to your watchlist.`,
+    );
   }
 
   // remove movie handler
   function handleRemoveMovie() {
     removeMovie(movie.imdbID);
     setShowRemoveConfirmation(false);
-    notificationService.success('Movie Removed', `"${movie.Title}" has been removed from your watchlist.`);
+    notificationService.success(
+      "Movie Removed",
+      `"${movie.Title}" has been removed from your watchlist.`,
+    );
   }
+
+  const cardActions = [
+    <Tooltip title="View Details" key="view">
+      <EyeOutlined
+        onClick={(event) => {
+          event.stopPropagation();
+          navigate(`/movie/${movie.imdbID}`);
+        }}
+      />
+    </Tooltip>,
+  ];
+
+  if (isAuthenticated) {
+    cardActions.push(
+      isSaved ? (
+        <Tooltip title="Remove from Watchlist" key="remove">
+          <DeleteOutlined
+            onClick={(event) => {
+              event.stopPropagation();
+              setShowRemoveConfirmation(true);
+            }}
+          />
+        </Tooltip>
+      ) : (
+        <Tooltip title="Add to Watchlist" key="add">
+          <PlusOutlined onClick={handleAddMovie} />
+        </Tooltip>
+      ),
+    );
+  }
+
+  const cover = <Poster src={movie.Poster} alt={movie.Title} />;
 
   return (
     <>
-    <Card
-      hoverable
-      cover={<Poster src={movie.Poster} alt={movie.Title} />}
-      onClick={() => navigate(`/movie/${movie.imdbID}`)}
-    >
-      <Text strong ellipsis>
-        {movie.Title}
-      </Text>
-
-      <br />
-
-      <Text type="secondary">{movie.Year}</Text>
-      
-      <Flex
-        vertical
-        gap={12}
-        style={{
-          marginTop: 16,
-        }}
-      >
-        <Button
-          block
-          onClick={(event) => {
-            event.stopPropagation();
-            navigate(`/movie/${movie.imdbID}`);
-          }}
-        >
-          View Details
-        </Button>
-
-        {isAuthenticated && (
+      <Card
+        hoverable
+        cover={
           isSaved ? (
-            <Button
-              block
-              icon={<CheckOutlined />}
-              onClick={(event) => {
-                event.stopPropagation();
-                setShowRemoveConfirmation(true);
-              }}
+            <Badge.Ribbon
+              text={
+                <>
+                  <CheckCircleFilled /> Saved
+                </>
+              }
+              color="green"
             >
-              Saved
-            </Button>
+              {cover}
+            </Badge.Ribbon>
           ) : (
-            <Button
-              type="primary"
-              block
-              icon={<PlusOutlined />}
-              onClick={handleAddMovie}
-            >
-              Add to Watchlist
-            </Button>
+            cover
           )
-        )}
-      </Flex>
-    </Card>
+        }
+        actions={cardActions}
+        onClick={() => navigate(`/movie/${movie.imdbID}`)}
+      >
+        <Card.Meta
+          title={<Text ellipsis>{movie.Title}</Text>}
+          description={
+            <Space size={4}>
+              <CalendarOutlined />
+              {movie.Year}
+            </Space>
+          }
+        />
+      </Card>
 
-    {/* Remove from Watchlist Confirmation */}
-    <ConfirmationDialog
-      open={showRemoveConfirmation}
-      title="Remove Movie"
-      content={`Are you sure you want to remove "${movie.Title}" from your watchlist?`}
-      confirmText="Yes, Remove"
-      danger
-      onConfirm={handleRemoveMovie}
-      onCancel={() => setShowRemoveConfirmation(false)}
-    />
+      {/* Remove from Watchlist Confirmation */}
+      <ConfirmationDialog
+        open={showRemoveConfirmation}
+        title="Remove Movie"
+        content={`Are you sure you want to remove "${movie.Title}" from your watchlist?`}
+        confirmText="Yes, Remove"
+        danger
+        onConfirm={handleRemoveMovie}
+        onCancel={() => setShowRemoveConfirmation(false)}
+      />
     </>
   );
 }

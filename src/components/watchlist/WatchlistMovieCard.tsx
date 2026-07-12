@@ -37,6 +37,7 @@ function WatchlistMovieCard({
   return (
     <Card
       hoverable
+      style={{ width: 290, borderRadius: 8 }}
       cover={
         watched ? (
           <Badge.Ribbon text="Watched" color="green">
@@ -58,9 +59,8 @@ function WatchlistMovieCard({
         >
           <Title
             level={5}
-            style={{
-              margin: 0,
-            }}
+            title={movie.Title}
+            style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
           >
             {movie.Title}
           </Title>

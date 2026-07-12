@@ -6,9 +6,11 @@ interface PosterProps {
   src: string;
   alt: string;
   height?: number;
+  width?: number;
+  borderRadius?: number;
 }
 
-function Poster({ src, alt, height = 380 }: PosterProps) {
+function Poster({ src, alt, height = 380, width = 290, borderRadius = 8 }: PosterProps) {
   const [imageError, setImageError] = useState(false);
 
   return (
@@ -17,8 +19,8 @@ function Poster({ src, alt, height = 380 }: PosterProps) {
       src={src === 'N/A' || imageError ? noPoster : src}
       alt={alt}
       height={height}
-      width="100%"
-      style={{ objectFit: 'cover' }}
+      width={width}
+      style={{ objectFit: 'contain', borderRadius }}
       onError={() => {
         setImageError(true);
         return false;

@@ -84,6 +84,7 @@ function MovieCard({ movie }: MovieCardProps) {
     <>
       <Card
         hoverable
+        style={{ width: 290 }}
         cover={
           isSaved ? (
             <Badge.Ribbon
@@ -104,7 +105,7 @@ function MovieCard({ movie }: MovieCardProps) {
         onClick={() => navigate(`/movie/${movie.imdbID}`)}
       >
         <Card.Meta
-          title={<Text ellipsis>{movie.Title}</Text>}
+          title={<Text ellipsis title={movie.Title}>{movie.Title}</Text>}
           description={
             <Space size={4}>
               <CalendarOutlined />

@@ -11,7 +11,7 @@ function LoadingSkeleton({ count = 8 }: LoadingSkeletonProps) {
         <Col key={index} xs={24} sm={12} md={8} lg={6}>
           <Card
             cover={
-              <Skeleton.Image active style={{ width: '100%', height: 380 }}/>
+              <Skeleton.Image active style={{ width: 290, height: 380 }}/>
             }
           >
             <Skeleton active paragraph={{ rows: 2 }}/>

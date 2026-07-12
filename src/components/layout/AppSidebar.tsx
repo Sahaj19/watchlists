@@ -7,12 +7,12 @@ import {
   LoginOutlined,
   LogoutOutlined,
   UserAddOutlined,
+  CloseOutlined
 } from "@ant-design/icons";
 import {
   Button,
   Divider,
   Flex,
-  Layout,
   Menu,
   Switch,
   Typography,
@@ -28,10 +28,13 @@ import { useAuth } from "../../hooks/useAuth";
 import { useWatchlist } from "../../hooks/useWatchlist";
 import { APP_NAME } from "../../utils/constants";
 
-const { Sider } = Layout;
 const { Title, Text } = Typography;
 
-function AppSidebar() {
+interface AppSidebarProps {
+  onClose?: () => void;
+}
+
+function AppSidebar({ onClose }: AppSidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { themeMode, toggleTheme, colors } = useTheme();
@@ -91,44 +94,53 @@ function AppSidebar() {
 
   return (
     <>
-      <Sider
-        width={260}
-        theme="light"
+      <Flex
+        vertical
+        justify="space-between"
         style={{
-          height: "100vh",
-          position: "sticky",
-          top: 0,
+          height: "100%",
+          minHeight: "100%",
           background: colors.sidebar,
-          borderRight: `1px solid ${colors.sidebarBorder}`,
         }}
       >
         <Flex vertical justify="space-between" style={{ height: "100%" }}>
           <Flex vertical>
             {/* Logo */}
             <Flex
-              vertical
+              justify="space-between"
+              align="flex-start"
               style={{
                 padding: 24,
               }}
             >
-              <Title
-                level={3}
-                style={{
-                  margin: 0,
-                  color: colors.textPrimary,
-                }}
-              >
+              <Flex vertical>
+                <Title
+                  level={3}
+                  style={{
+                    margin: 0,
+                    color: colors.textPrimary,
+                  }}
+                >
                 🎬 {APP_NAME}
-              </Title>
+                </Title>
 
-              <Text
-                type="secondary"
-                style={{
-                  color: colors.textSecondary,
-                }}
-              >
-                Find your next favourite movie.
-              </Text>
+                <Text
+                  type="secondary"
+                  style={{
+                    color: colors.textSecondary,
+                  }}
+                >
+                  Find your next favourite movie.
+                </Text>
+              </Flex>
+
+              {onClose && (
+                <Button
+                  type="text"
+                  icon={<CloseOutlined />}
+                  onClick={onClose}
+                />
+              )}
             </Flex>
 
             <Divider style={{ margin: 0 }} />
@@ -248,7 +260,7 @@ function AppSidebar() {
             </Flex>
           </Flex>
         </Flex>
-      </Sider>
+      </Flex>
 
       {/* Authentication Required Modal */}
       <AuthenticationRequiredModal

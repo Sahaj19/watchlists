@@ -1,8 +1,9 @@
-import { Card, Typography } from "antd";
+import { Card, Grid, Typography } from "antd";
 import type { ReactNode } from "react";
 import { useTheme } from "../../hooks/useTheme";
 
 const { Title, Paragraph, Text } = Typography;
+const { useBreakpoint } = Grid;
 
 interface PageBannerProps {
   title: string;
@@ -18,7 +19,7 @@ function PageBanner({
   children,
 }: PageBannerProps) {
   const { colors } = useTheme();
-
+  const screens = useBreakpoint();
   return (
     <Card
       style={{
@@ -28,17 +29,18 @@ function PageBanner({
       }}
       styles={{
         body: {
-          padding: "20px",
+          padding: screens.md ? "20px" : "15px",
         },
       }}
     >
-      <Title
-        level={1}
-        style={{
-          marginBottom: 10,
-          color: colors.textPrimary,
-        }}
-      >
+        <Title
+          level={screens.md ? 1 : 2}
+          style={{
+            marginBottom: screens.md ? 16 : 10,
+            color: colors.textPrimary,
+            lineHeight: 1.2,
+          }}
+        >
         {title}{" "}
         <Text
           style={{
@@ -53,7 +55,8 @@ function PageBanner({
       {description && (
         <Paragraph
           style={{
-            fontSize: 20,
+            fontSize: screens.md ? 18 : 15,
+            lineHeight: 1.7,
             marginBottom: children ? 18 : 0,
             color: colors.textPrimary,
           }}

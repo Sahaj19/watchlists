@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Flex, Typography } from 'antd';
+import { Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import usePageTitle from '../hooks/usePageTitle';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
@@ -13,8 +13,7 @@ import WatchlistFilters, { type WatchlistFiltersValue } from '../components/watc
 import { notificationService } from '../services/notification.service';
 import { applyWatchlistFilters } from '../utils/watchlistFiltersLogic';
 import ErrorState from '../components/common/ErrorState';
-
-const { Title } = Typography;
+import PageBanner from '../components/common/PageBanner';
 
 function Watchlist() {
   usePageTitle('Watchlists | My Watchlist');
@@ -181,9 +180,11 @@ function Watchlist() {
       vertical
       gap={24}
     >
-      <Title level={2}>
-        My Watchlist
-      </Title>
+      <PageBanner
+        title="Your Personal"
+        highlightedTitle="Watchlist"
+        description="All the movies you've saved in one place. Keep track of what you want to watch and manage your collection anytime."
+      />
 
       <WatchlistFilters
         value={filters}

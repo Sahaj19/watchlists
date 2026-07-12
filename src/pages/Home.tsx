@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { Flex, Pagination } from 'antd';
 import usePageTitle from '../hooks/usePageTitle';
 import SearchBar from '../components/search/SearchBar';
+import PageBanner from '../components/common/PageBanner';
 import { searchMovies } from '../services/movie.service';
 import EmptyState from '../components/common/EmptyState';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
@@ -82,6 +83,12 @@ function Home() {
 
  return (
   <Flex vertical gap={24}>
+    <PageBanner
+      title="Welcome to"
+      highlightedTitle="Watchlists"
+      description="Browse movies, add them to your personal watchlist and share them with friends."
+    />
+
     <SearchBar
       searchTerm={searchTerm}
       loading={loading}

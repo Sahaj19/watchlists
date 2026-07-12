@@ -1,5 +1,7 @@
-import { Button, Flex, Input } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Button, Flex, Grid, Input } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+
+const { useBreakpoint } = Grid;
 
 interface SearchBarProps {
   searchTerm: string;
@@ -9,8 +11,13 @@ interface SearchBarProps {
 }
 
 function SearchBar({ searchTerm, loading, onSearchTermChange, onSearch }: SearchBarProps) {
+  const screens = useBreakpoint();
+
+  const isMobile = !screens.md;
+  const buttonMinWidth = isMobile ? "100%" : 140;
+
   return (
-    <Flex gap={12}>
+    <Flex gap={12} vertical={isMobile}>
       <Input
         size="large"
         placeholder="Search movies..."
@@ -26,6 +33,7 @@ function SearchBar({ searchTerm, loading, onSearchTermChange, onSearch }: Search
         icon={<SearchOutlined />}
         loading={loading}
         onClick={onSearch}
+        style={{ minWidth: buttonMinWidth }}
       >
         Search
       </Button>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Flex } from 'antd';
+import { Flex, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import usePageTitle from '../hooks/usePageTitle';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
@@ -203,27 +203,31 @@ function Watchlist() {
           }
         />
       ) : (
-        <Flex
-          wrap="wrap"
-          gap={24}
-        >
+        <Row gutter={[24, 24]}>
           {filteredMovies.map((movie) => {
             const watchlistMovie = watchlist.find(
               (item) => item.imdbID === movie.imdbID
             );
 
             return (
-              <WatchlistMovieCard
+              <Col
                 key={movie.imdbID}
-                movie={movie}
-                watched={watchlistMovie?.watched ?? false}
-                onViewDetails={handleViewDetails}
-                onToggleWatched={handleToggleWatched}
-                onRemove={handleRemove}
-              />
+                xs={24}
+                sm={12}
+                md={8}
+                lg={6}
+              >
+                <WatchlistMovieCard
+                  movie={movie}
+                  watched={watchlistMovie?.watched ?? false}
+                  onViewDetails={handleViewDetails}
+                  onToggleWatched={handleToggleWatched}
+                  onRemove={handleRemove}
+                />
+              </Col>
             );
           })}
-        </Flex>
+        </Row>
       )}
     </Flex>
 

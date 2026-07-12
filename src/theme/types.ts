@@ -24,6 +24,7 @@ export interface AppTheme {
   shadow: string;
 
   white: string;
+  green: string;
 
   imdb: string;
   rottenTomatoes: string;

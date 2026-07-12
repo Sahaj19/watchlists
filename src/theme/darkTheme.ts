@@ -26,6 +26,7 @@ export const darkTheme: AppTheme = {
   shadow: '0 8px 24px rgba(0,0,0,.35)',
 
   white: '#ffffff',
+  green: '#008000',
 
   imdb: '#F5C518',
   rottenTomatoes: '#FA5238',

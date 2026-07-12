@@ -14,6 +14,7 @@ import { notificationService } from "../../services/notification.service";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useWatchlist } from "../../hooks/useWatchlist";
+import { useTheme } from "../../hooks/useTheme";
 
 const { Text } = Typography;
 
@@ -22,6 +23,7 @@ interface MovieCardProps {
 }
 
 function MovieCard({ movie }: MovieCardProps) {
+  const { colors } = useTheme();
   const navigate = useNavigate();
   const { addMovie, isMovieInWatchlist, removeMovie } = useWatchlist();
   const { isAuthenticated } = useAuth();
@@ -93,7 +95,7 @@ function MovieCard({ movie }: MovieCardProps) {
                   <CheckCircleFilled /> Saved
                 </>
               }
-              color="green"
+              color={colors.green}
             >
               {cover}
             </Badge.Ribbon>

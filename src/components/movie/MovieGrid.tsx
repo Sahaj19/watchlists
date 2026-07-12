@@ -1,4 +1,4 @@
-import { Col, Row } from 'antd';
+import { Col, Row, Flex } from 'antd';
 
 import MovieCard from './MovieCard';
 
@@ -17,9 +17,13 @@ function MovieGrid({ movies }: MovieGridProps) {
           xs={24}
           sm={12}
           md={8}
-          lg={6}
+          lg={8}
+          xl={6}
+          xxl={4}
         >
-          <MovieCard movie={movie} />
+          <Flex justify="center">
+            <MovieCard movie={movie} />
+          </Flex>
         </Col>
       ))}
     </Row>

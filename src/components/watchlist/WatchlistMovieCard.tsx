@@ -4,6 +4,7 @@ import {
 } from '@ant-design/icons';
 
 import {
+  Badge,
   Button,
   Card,
   Flex,
@@ -31,10 +32,20 @@ function WatchlistMovieCard({
   onToggleWatched,
   onRemove,
 }: WatchlistMovieCardProps) {
+  const cover = <Poster src={movie.Poster} alt={movie.Title} />;
+
   return (
     <Card
       hoverable
-      cover={<Poster src={movie.Poster} alt={movie.Title} />}
+      cover={
+        watched ? (
+          <Badge.Ribbon text="Watched" color="green">
+            {cover}
+          </Badge.Ribbon>
+        ) : (
+          cover
+        )
+      }
       onClick={() => onViewDetails(movie)}
     >
       <Flex

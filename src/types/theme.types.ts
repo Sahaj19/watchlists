@@ -6,5 +6,5 @@ export type ThemeMode = 'light' | 'dark';
 export interface ThemeContextType {
   themeMode: ThemeMode;
   toggleTheme: () => void;
-   colors: AppTheme;
+  colors: AppTheme;
 }

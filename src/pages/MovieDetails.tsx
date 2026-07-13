@@ -12,6 +12,7 @@ import { notificationService } from '../services/notification.service';
 import MovieHero from '../components/movie/MovieHero';
 import MovieRatings from '../components/movie/MovieRatings';
 import MovieInfo from '../components/movie/MovieInfo';
+import MovieAwards from '../components/movie/MovieAwards';
 
 function MovieDetails() {
   const navigate = useNavigate();
@@ -90,6 +91,8 @@ function MovieDetails() {
         metascore={movie.Metascore}
         ratings={movie.Ratings}
       />
+
+      <MovieAwards awards={movie.Awards} />
 
       <MovieInfo movie={movie} />
     </Flex>

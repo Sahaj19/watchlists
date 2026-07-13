@@ -1,45 +1,76 @@
-import { Card, Descriptions, Typography } from 'antd';
+import { Card, Col, Row, Typography, Flex } from "antd";
+import { CalendarOutlined, ClockCircleOutlined, GlobalOutlined, SafetyCertificateOutlined, TagsOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import type { MovieDetails } from "../../types/movie.types";
+import { useTheme } from "../../hooks/useTheme";
+import MovieDetailItem from "./MovieDetailItem";
 
-import type { MovieDetails } from '../../types/movie.types';
-
-const { Paragraph } = Typography;
+const { Title, Paragraph } = Typography;
 
 interface MovieInfoProps {
   movie: MovieDetails;
 }
 
 function MovieInfo({ movie }: MovieInfoProps) {
+  const { colors } = useTheme();
+
   return (
-    <Card title="Movie Information">
-      <Descriptions
-        column={{ xs: 1, sm: 2 }}
-        bordered
-        size="middle"
-      >
-        <Descriptions.Item label="Plot" span={2}>
-          <Paragraph>{movie.Plot}</Paragraph>
-        </Descriptions.Item>
+    <Card>
+      <Row gutter={[40, 32]}>
+        {/* Movie Plot */}
+        <Col xs={24} lg={14}>
+          <Title level={3} style={{ color: colors.textPrimary }}>Plot</Title>
+          <Paragraph style={{ color: colors.textSecondary, fontSize: 16, lineHeight: 1.8, marginBottom: 0}}>{movie.Plot}</Paragraph>
+        </Col>
 
-        <Descriptions.Item label="Director">
-          {movie.Director}
-        </Descriptions.Item>
+        {/* Movie Additional Details */}
+        <Col xs={24} lg={10}>
+          <Title level={3} style={{ color: colors.textPrimary }}>Details</Title>
 
-        <Descriptions.Item label="Actors">
-          {movie.Actors}
-        </Descriptions.Item>
+          <Flex vertical gap={20}>
+            <MovieDetailItem
+              icon={<UserOutlined />}
+              label="Director"
+              value={movie.Director}
+            />
 
-        <Descriptions.Item label="Awards">
-          {movie.Awards}
-        </Descriptions.Item>
+            <MovieDetailItem
+              icon={<TeamOutlined />}
+              label="Actors"
+              value={movie.Actors}
+            />
 
-        <Descriptions.Item label="Released">
-          {movie.Released}
-        </Descriptions.Item>
+            <MovieDetailItem
+              icon={<CalendarOutlined />}
+              label="Released"
+              value={movie.Released}
+            />
 
-        <Descriptions.Item label="Rated">
-          {movie.Rated}
-        </Descriptions.Item>
-      </Descriptions>
+            <MovieDetailItem
+              icon={<SafetyCertificateOutlined />}
+              label="Rated"
+              value={movie.Rated}
+            />
+
+            <MovieDetailItem
+              icon={<GlobalOutlined />}
+              label="Language"
+              value={movie.Language}
+            />
+
+            <MovieDetailItem
+              icon={<ClockCircleOutlined />}
+              label="Runtime"
+              value={movie.Runtime}
+            />
+
+            <MovieDetailItem
+              icon={<TagsOutlined />}
+              label="Genre"
+              value={movie.Genre}
+            />
+          </Flex>
+        </Col>
+      </Row>
     </Card>
   );
 }

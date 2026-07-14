@@ -1,5 +1,5 @@
 import { Card, Col, Row, Typography, Flex } from "antd";
-import { CalendarOutlined, ClockCircleOutlined, GlobalOutlined, SafetyCertificateOutlined, TagsOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import { CalendarOutlined, ClockCircleOutlined, GlobalOutlined, SafetyCertificateOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
 import type { MovieDetails } from "../../types/movie.types";
 import { useTheme } from "../../hooks/useTheme";
 import MovieDetailItem from "./MovieDetailItem";

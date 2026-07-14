@@ -62,12 +62,6 @@ function MovieInfo({ movie }: MovieInfoProps) {
               label="Runtime"
               value={movie.Runtime}
             />
-
-            <MovieDetailItem
-              icon={<TagsOutlined />}
-              label="Genre"
-              value={movie.Genre}
-            />
           </Flex>
         </Col>
       </Row>

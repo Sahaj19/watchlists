@@ -1,20 +1,14 @@
-import { createContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import type { AuthContextType } from '../types/auth.types';
-import type { User } from '../types/user.types';
-import * as authService from '../services/auth.service';
-
-export const AuthContext = createContext<AuthContextType | null>(null);
+import { useMemo, useState, type ReactNode } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import type { User } from "../../types/user.types";
+import * as authService from "../../services/auth.service";
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-export function AuthProvider({ children }: AuthProviderProps) {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    setCurrentUser(authService.getCurrentUser());
-  }, []);
+function AuthProvider({ children }: AuthProviderProps) {
+  const [currentUser, setCurrentUser] = useState<User | null>(() => authService.getCurrentUser());
 
   const signup = (email: string) => {
     const success = authService.signup(email);
@@ -58,3 +52,5 @@ export function AuthProvider({ children }: AuthProviderProps) {
     </AuthContext.Provider>
   );
 }
+
+export default AuthProvider;

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button, Card, Flex } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
@@ -15,12 +15,11 @@ import MovieInfo from "../components/movie/MovieInfo";
 import MovieAwards from "../components/movie/MovieAwards";
 
 function MovieDetails() {
+  const movieInfoRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { imdbID } = useParams();
   const [movie, setMovie] = useState<MovieDetailsType | null>(null);
-  usePageTitle(
-    movie ? `Watchlists | ${movie.Title}` : "Watchlists | Movie Details",
-  );
+  usePageTitle(movie ? `Watchlists | ${movie.Title}` : "Watchlists | Movie Details");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -52,6 +51,13 @@ function MovieDetails() {
     fetchMovie();
   }, [fetchMovie]);
 
+  function handleReadMore() {
+    movieInfoRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+
   if (loading) {
     return <MovieDetailsSkeleton />;
   }
@@ -71,24 +77,13 @@ function MovieDetails() {
   }
 
   return (
-    <Flex
-      vertical
-      gap={32}
-      style={{
-        maxWidth: 1180,
-        margin: "0 auto",
-        width: "100%",
-        padding: "24px 10px",
-      }}
-    >
+    <Flex vertical gap={32} style={{ maxWidth: 1180, margin: "0 auto", width: "100%", padding: "24px 10px" }}>
       <Flex justify="start" wrap gap={16}>
-        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate("/")}>
-          Back
-        </Button>
+        <Button icon={<ArrowLeftOutlined />} onClick={() => navigate("/")}>Back</Button>
       </Flex>
 
       <Card style={{ width: "100%" }} styles={{ body: { padding: 0 } }}>
-        <MovieHero movie={movie} />
+        <MovieHero movie={movie} onReadMore={handleReadMore} />
       </Card>
 
       <MovieRatings
@@ -99,7 +94,9 @@ function MovieDetails() {
 
       <MovieAwards awards={movie.Awards} />
 
-      <MovieInfo movie={movie} />
+      <Flex ref={movieInfoRef}>
+        <MovieInfo movie={movie} />
+      </Flex>
     </Flex>
   );
 }

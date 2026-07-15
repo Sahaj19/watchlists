@@ -1,26 +1,23 @@
 import { useState } from "react";
 import ConfirmationDialog from "../common/ConfirmationDialog";
 import { useWatchlist } from "../../hooks/useWatchlist";
-import { Button, Flex, Grid, Tag, Typography } from "antd";
-import {
-  HeartOutlined,
-  LinkOutlined,
-  ShareAltOutlined,
-  TagsOutlined,
-  DeleteOutlined,
-} from "@ant-design/icons";
+import { Button, Flex, Grid, Tag, Typography, Card } from "antd";
+import { CopyOutlined, ExportOutlined, HeartOutlined, TagsOutlined, DeleteOutlined, ArrowDownOutlined } from "@ant-design/icons";
 import Poster from "../common/Poster";
 import { notificationService } from "../../services/notification.service";
 import type { MovieDetails } from "../../types/movie.types";
+import { useTheme } from "../../hooks/useTheme";
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 const { useBreakpoint } = Grid;
 
 interface MovieHeroProps {
   movie: MovieDetails;
+  onReadMore: () => void;
 }
 
-function MovieHero({ movie }: MovieHeroProps) {
+function MovieHero({ movie, onReadMore }: MovieHeroProps) {
+  const { colors } = useTheme();
   const screens = useBreakpoint();
   const [showRemoveConfirmation, setShowRemoveConfirmation] = useState(false);
   const { addMovie, removeMovie, isMovieInWatchlist } = useWatchlist();
@@ -29,39 +26,26 @@ function MovieHero({ movie }: MovieHeroProps) {
   // add movie handler
   function handleAddMovie() {
     addMovie(movie.imdbID);
-    notificationService.success(
-      "Movie Added",
-      `"${movie.Title}" has been added to your watchlist.`,
-    );
+    notificationService.success("Movie Added", `"${movie.Title}" has been added to your watchlist.`);
   }
 
   // remove movie handler
   function handleRemoveMovie() {
     removeMovie(movie.imdbID);
     setShowRemoveConfirmation(false);
-    notificationService.success(
-      "Movie Removed",
-      `"${movie.Title}" has been removed from your watchlist.`,
-    );
+    notificationService.success("Movie Removed", `"${movie.Title}" has been removed from your watchlist.`);
   }
 
   async function handleShare() {
-  const url = `https://www.imdb.com/title/${movie.imdbID}`;
+    const url = `https://www.imdb.com/title/${movie.imdbID}`;
 
-  try {
-    await navigator.clipboard.writeText(url);
-
-    notificationService.success(
-      "Link Copied",
-      "IMDb link copied to clipboard."
-    );
-  } catch {
-    notificationService.error(
-      "Unable to Copy",
-      "Please try again."
-    );
+    try {
+      await navigator.clipboard.writeText(url);
+      notificationService.success("Link Copied", "IMDb link copied to clipboard.");
+    } catch {
+      notificationService.error("Unable to Copy", "Please try again.");
+    }
   }
-}
 
   return (
     <>
@@ -71,26 +55,14 @@ function MovieHero({ movie }: MovieHeroProps) {
         align={screens.md ? "flex-start" : "center"}
         style={{ width: "100%", padding: screens.md ? 32 : 16 }}
       >
-        <Poster src={movie.Poster} alt={movie.Title} />
+        <Poster src={movie.Poster} alt={movie.Title} width={260} height={380} />
 
-        <Flex
-          vertical
-          justify="center"
-          gap={20}
-          style={{
-            minWidth: 280,
-            flex: 1,
-            width: "100%",
-            textAlign: screens.md ? "left" : "center",
-          }}
-        >
-          <Title level={2}>{movie.Title}</Title>
+        <Flex vertical style={{ flex: 1, minHeight: 380, width: "100%" }}>
+          {/* Title */}
+          <Title level={2} style={{ marginTop: 0, marginBottom: 24 }}>{movie.Title}</Title>
 
-          <Flex
-            wrap
-            gap={8}
-            justify={screens.md ? "flex-start" : "center"}
-          >
+          {/* Genres */}
+          <Flex wrap gap={8} style={{ marginBottom: 24 }}>
             {movie.Genre.split(", ").map((genre) => (
               <Tag key={genre} icon={<TagsOutlined />}>
                 {genre}
@@ -98,43 +70,50 @@ function MovieHero({ movie }: MovieHeroProps) {
             ))}
           </Flex>
 
-          <Flex
-            wrap
-            gap={12}
-            justify={screens.md ? "flex-start" : "center"}
-          >
+          {/* Plot */}
+          {movie.Plot !== "N/A" && (
+            <Card
+              size="small"
+              style={{ flex: 1, borderColor: colors.border, marginBottom: 24 }}
+              styles={{
+                body: {
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                },
+              }}
+            >
+              <Paragraph style={{ fontSize: 16, lineHeight: 1.8 }} ellipsis={{ rows: 3 }}>{movie.Plot}</Paragraph>
+
+              <Button
+                type="text"
+                icon={<ArrowDownOutlined />}
+                onClick={onReadMore}
+                style={{ width: "fit-content", paddingInline: 2, color: colors.primary, fontWeight: 600 }}
+              >
+                Continue Reading
+              </Button>
+            </Card>
+          )}
+
+          {/* Actions */}
+          <Flex wrap gap={12} justify={screens.md ? "flex-start" : "center"}>
             {isSaved ? (
-              <Button
-                danger
-                icon={<DeleteOutlined />}
-                onClick={() => setShowRemoveConfirmation(true)}
-              >
-                Remove from Watchlist
-              </Button>
+              <Button danger icon={<DeleteOutlined />} onClick={() => setShowRemoveConfirmation(true)}>Remove from Watchlist</Button>
             ) : (
-              <Button
-                type="primary"
-                icon={<HeartOutlined />}
-                onClick={handleAddMovie}
-              >
-                Save to Watchlist
-              </Button>
+              <Button type="primary" icon={<HeartOutlined />}  onClick={handleAddMovie}>Save to Watchlist</Button>
             )}
 
             <Button
-              icon={<LinkOutlined />}
+              icon={<ExportOutlined />}
               href={`https://www.imdb.com/title/${movie.imdbID}`}
               target="_blank"
             >
-              IMDb
+              View on IMDb
             </Button>
 
-            <Button
-              icon={<ShareAltOutlined />}
-              onClick={handleShare}
-            >
-              Share
-            </Button>
+            <Button icon={<CopyOutlined />} onClick={handleShare}>Copy URL</Button>
           </Flex>
         </Flex>
       </Flex>

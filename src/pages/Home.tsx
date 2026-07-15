@@ -12,7 +12,6 @@ import type { MovieSearchResult } from '../types/movie.types';
 import { MOVIES_PER_PAGE } from '../utils/constants';
 import ErrorState from '../components/common/ErrorState';
 
-
 function Home() {
   usePageTitle('Watchlists');
   const [error, setError] = useState(false);
@@ -67,9 +66,8 @@ function Home() {
 
   async function handlePageChange(page: number) {
     setCurrentPage(page);
-
     await fetchMovies(page);
-}
+  }
 
   if (error) {
     return (
@@ -114,9 +112,7 @@ function Home() {
         pageSize={MOVIES_PER_PAGE}
         total={Number(searchResult.totalResults)}
         onChange={handlePageChange}
-        style={{
-          alignSelf: 'center',
-        }}
+        style={{ alignSelf: 'center'}}
       />
     )}
   </Flex>

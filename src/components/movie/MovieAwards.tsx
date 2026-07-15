@@ -18,14 +18,8 @@ function MovieAwards({ awards }: MovieAwardsProps) {
   return (
     <Card>
       <Flex vertical gap={20}>
-        <Title level={3} style={{ margin: 0, color: colors.textPrimary }}>
-          <TrophyOutlined /> Awards
-        </Title>
-        <Alert
-          type="warning"
-          description={awards}
-          style={{ background: colors.surface, border: `1px solid ${colors.warning}` }}
-        />
+        <Title level={3} style={{ margin: 0, color: colors.textPrimary }}><TrophyOutlined /> Awards</Title>
+        <Alert type="warning" description={awards} style={{ background: colors.surface, border: `1px solid ${colors.warning}` }} />
       </Flex>
     </Card>
   );

@@ -50,24 +50,9 @@ function MovieRatings({ imdbRating, metascore, ratings }: MovieRatingsProps) {
       <Row gutter={[16, 16]}>
         {ratingCards.map((rating) => (
           <Col key={rating.title} xs={24} sm={24} md={12} xl={8}>
-            <Card
-              hoverable
-              style={{ height: "100%", background: colors.surface, borderColor: colors.border }}
-              styles={{ body: { padding: 16 } }}
-            >
+            <Card hoverable style={{ height: "100%", background: colors.surface, borderColor: colors.border }} styles={{ body: { padding: 16 } }}>
               <Flex align="center" gap={14}>
-                <Avatar
-                  size={48}
-                  style={{
-                    background: rating.color,
-                    color: colors.white,
-                    fontWeight: 700,
-                    fontSize: 15,
-                  }}
-                >
-                  {rating.initials}
-                </Avatar>
-
+                <Avatar size={48} style={{ background: rating.color, color: colors.white, fontWeight: 700, fontSize: 15 }}>{rating.initials}</Avatar>
                 <Flex vertical>
                   <Text type="secondary" style={{ fontSize: 15 }}>{rating.title}</Text>
                   <Title level={4} style={{ margin: "2px 0 0" }}>{rating.value}</Title>

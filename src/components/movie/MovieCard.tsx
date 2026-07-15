@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { Badge, Card, Space, Tooltip, Typography } from "antd";
-import {
-  PlusOutlined,
-  CheckCircleFilled,
-  EyeOutlined,
-  DeleteOutlined,
-  CalendarOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, CheckCircleFilled, EyeOutlined, DeleteOutlined, CalendarOutlined } from "@ant-design/icons";
 import type { MovieSummary } from "../../types/movie.types";
 import Poster from "../common/Poster";
 import ConfirmationDialog from "../common/ConfirmationDialog";
@@ -34,20 +28,14 @@ function MovieCard({ movie }: MovieCardProps) {
   function handleAddMovie(event: React.MouseEvent<HTMLElement>) {
     event.stopPropagation();
     addMovie(movie.imdbID);
-    notificationService.success(
-      "Movie Added",
-      `"${movie.Title}" has been added to your watchlist.`,
-    );
+    notificationService.success("Movie Added", `"${movie.Title}" has been added to your watchlist.`);
   }
 
   // remove movie handler
   function handleRemoveMovie() {
     removeMovie(movie.imdbID);
     setShowRemoveConfirmation(false);
-    notificationService.success(
-      "Movie Removed",
-      `"${movie.Title}" has been removed from your watchlist.`,
-    );
+    notificationService.success("Movie Removed", `"${movie.Title}" has been removed from your watchlist.`);
   }
 
   const cardActions = [

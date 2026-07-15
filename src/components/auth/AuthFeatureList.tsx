@@ -1,10 +1,4 @@
-import {
-  CheckCircleOutlined,
-  ClockCircleOutlined,
-  HeartOutlined,
-  RocketFilled,
-  StarOutlined,
-} from "@ant-design/icons";
+import { CheckCircleOutlined, ClockCircleOutlined, HeartOutlined, RocketFilled, StarOutlined } from "@ant-design/icons";
 import { Avatar, Flex, Typography } from "antd";
 import { useTheme } from "../../hooks/useTheme";
 
@@ -67,66 +61,21 @@ function AuthFeatureList({ mode }: AuthFeatureListProps) {
   return (
     <Flex vertical gap={36}>
       <Flex align="center" gap={12}>
-        <Avatar
-          size={52}
-          style={{
-            background: colors.primary,
-            color: colors.white,
-          }}
-          icon={<RocketFilled />}
-        />
+        <Avatar size={52} style={{ background: colors.primary, color: colors.white }} icon={<RocketFilled />} />
 
         <Flex vertical gap={2}>
-          <Title
-            level={2}
-            style={{
-              margin: 0,
-              color: colors.textPrimary,
-            }}
-          >
-            {mode === "login" ? "Why Sign In?" : "Why Create an Account?"}
-          </Title>
-
-          <Text
-            style={{
-              color: colors.textSecondary,
-            }}
-          >
-            Everything you need for your movie journey.
-          </Text>
+          <Title level={2} style={{ margin: 0, color: colors.textPrimary }}>{mode === "login" ? "Why Sign In?" : "Why Create an Account?"}</Title>
+          <Text style={{ color: colors.textSecondary }}>Everything you need for your movie journey.</Text>
         </Flex>
       </Flex>
 
       {features.map((feature) => (
         <Flex key={feature.title} gap={18} align="flex-start">
-          <Avatar
-            size={46}
-            style={{
-              background: `${colors.primary}15`,
-              color: colors.primary,
-            }}
-            icon={feature.icon}
-          />
+          <Avatar size={46} style={{ background: `${colors.primary}15`, color: colors.primary }} icon={feature.icon} />
 
           <Flex vertical gap={4}>
-            <Title
-              level={4}
-              style={{
-                margin: 0,
-                color: colors.textPrimary,
-              }}
-            >
-              {feature.title}
-            </Title>
-
-            <Text
-              style={{
-                color: colors.textSecondary,
-                lineHeight: 1.6,
-              }}
-            >
-              {feature.description}
-            </Text>
+            <Title level={4} style={{ margin: 0, color: colors.textPrimary }}>{feature.title}</Title>
+            <Text style={{ color: colors.textSecondary, lineHeight: 1.6 }}>{feature.description}</Text>
           </Flex>
         </Flex>
       ))}

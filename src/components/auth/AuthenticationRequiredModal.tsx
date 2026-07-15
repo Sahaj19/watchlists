@@ -26,9 +26,7 @@ function AuthenticationRequiredModal({ open, onCancel }: AuthenticationRequiredM
       cancelText="Go Back"
       centered
     >
-      <Text>
-        You need to login to create, view and manage your personal watchlist.
-      </Text>
+      <Text>You need to login to create, view and manage your personal watchlist.</Text>
     </Modal>
   );
 }

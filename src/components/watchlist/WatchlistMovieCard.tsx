@@ -1,18 +1,5 @@
-import {
-  CheckOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-} from '@ant-design/icons';
-
-import {
-  Badge,
-  Card,
-  Flex,
-  Tag,
-  Tooltip,
-  Typography,
-} from 'antd';
-
+import { CheckOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { Badge, Card, Flex, Tag, Tooltip, Typography } from 'antd';
 import type { MovieDetails } from '../../types/movie.types';
 import Poster from '../common/Poster';
 import { useTheme } from '../../hooks/useTheme';
@@ -22,19 +9,12 @@ const { Title, Text } = Typography;
 interface WatchlistMovieCardProps {
   movie: MovieDetails;
   watched: boolean;
-
   onViewDetails: (movie: MovieDetails) => void;
   onToggleWatched: (movie: MovieDetails) => void;
   onRemove: (movie: MovieDetails) => void;
 }
 
-function WatchlistMovieCard({
-  movie,
-  watched,
-  onViewDetails,
-  onToggleWatched,
-  onRemove,
-}: WatchlistMovieCardProps) {
+function WatchlistMovieCard({ movie, watched, onViewDetails, onToggleWatched, onRemove }: WatchlistMovieCardProps) {
   const { colors } = useTheme();
   const cover = <Poster src={movie.Poster} alt={movie.Title} />;
 
@@ -76,11 +56,7 @@ function WatchlistMovieCard({
     >
       <Card.Meta
         title={
-          <Title
-            level={5}
-            title={movie.Title}
-            style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
-          >
+          <Title level={5} title={movie.Title} style={{ margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {movie.Title}
           </Title>
         }
@@ -90,7 +66,7 @@ function WatchlistMovieCard({
 
             <Flex gap={4} wrap>
               {movie.Genre.split(',').map((genre) => (
-                <Tag key={genre} bordered={false} style={{ margin: 0 }}>
+                <Tag key={genre} style={{ margin: 0 }}>
                   {genre.trim()}
                 </Tag>
               ))}

@@ -87,7 +87,7 @@ function MovieDetails() {
         </Button>
       </Flex>
 
-      <Card style={{ width: "100%" }} bodyStyle={{ padding: 0 }}>
+      <Card style={{ width: "100%" }} styles={{ body: { padding: 0 } }}>
         <MovieHero movie={movie} />
       </Card>
 

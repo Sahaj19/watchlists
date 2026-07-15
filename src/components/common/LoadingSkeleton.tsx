@@ -9,11 +9,7 @@ function LoadingSkeleton({ count = 8 }: LoadingSkeletonProps) {
     <Row gutter={[24, 24]}>
       {Array.from({ length: count }).map((_, index) => (
         <Col key={index} xs={24} sm={12} md={8} lg={8} xl={6} xxl={4}>
-          <Card
-            cover={
-              <Skeleton.Image active style={{ width: 290, height: 380 }}/>
-            }
-          >
+          <Card cover={<Skeleton.Image active style={{ width: 290, height: 380 }}/>}>
             <Skeleton active paragraph={{ rows: 2 }}/>
           </Card>
         </Col>

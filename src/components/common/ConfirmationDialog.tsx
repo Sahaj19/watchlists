@@ -12,17 +12,7 @@ interface ConfirmationDialogProps {
   onCancel: () => void;
 }
 
-function ConfirmationDialog({
-  title,
-  content,
-  open,
-  loading = false,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
-  danger = false,
-  onConfirm,
-  onCancel,
-}: ConfirmationDialogProps) {
+function ConfirmationDialog({ title, content, open, loading = false, confirmText = 'Confirm', cancelText = 'Cancel', danger = false, onConfirm, onCancel }: ConfirmationDialogProps) {
   return (
     <Modal
       open={open}
@@ -32,9 +22,7 @@ function ConfirmationDialog({
       okText={confirmText}
       cancelText={cancelText}
       confirmLoading={loading}
-      okButtonProps={{
-        danger,
-      }}
+      okButtonProps={{ danger }}
       destroyOnHidden
     >
       {content}

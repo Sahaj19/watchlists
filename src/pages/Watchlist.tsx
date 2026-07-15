@@ -9,9 +9,7 @@ import ConfirmationDialog from "../components/common/ConfirmationDialog";
 import { useWatchlist } from "../hooks/useWatchlist";
 import { getMovieDetails } from "../services/movie.service";
 import type { MovieDetails } from "../types/movie.types";
-import WatchlistFilters, {
-  type WatchlistFiltersValue,
-} from "../components/watchlist/WatchlistFilters";
+import WatchlistFilters, { type WatchlistFiltersValue } from "../components/watchlist/WatchlistFilters";
 import { notificationService } from "../services/notification.service";
 import { applyWatchlistFilters } from "../utils/watchlistFiltersLogic";
 import ErrorState from "../components/common/ErrorState";
@@ -20,9 +18,7 @@ import PageBanner from "../components/common/PageBanner";
 function Watchlist() {
   usePageTitle("Watchlists | My Watchlist");
   const navigate = useNavigate();
-
   const { watchlist, removeMovie, toggleWatched } = useWatchlist();
-
   const [error, setError] = useState(false);
   const [movies, setMovies] = useState<MovieDetails[]>([]);
   const [loading, setLoading] = useState(false);
@@ -67,21 +63,13 @@ function Watchlist() {
       setLoading(true);
       setError(false);
 
-      const responses = await Promise.all(
-        watchlist.map((movie) => getMovieDetails(movie.imdbID)),
-      );
-
-      const validMovies = responses.filter(
-        (movie): movie is MovieDetails => movie.Response === "True",
-      );
+      const responses = await Promise.all(watchlist.map((movie) => getMovieDetails(movie.imdbID)));
+      const validMovies = responses.filter((movie): movie is MovieDetails => movie.Response === "True");
 
       setMovies(validMovies);
     } catch {
       setError(true);
-      notificationService.error(
-        "Unable to Load Watchlist",
-        "Please try again later.",
-      );
+      notificationService.error("Unable to Load Watchlist", "Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -109,15 +97,9 @@ function Watchlist() {
     toggleWatched(movie.imdbID);
 
     if (watchlistMovie?.watched) {
-      notificationService.info(
-        "Marked as Unwatched",
-        `"${movie.Title}" has been marked as unwatched.`,
-      );
+      notificationService.info("Marked as Unwatched", `"${movie.Title}" has been marked as unwatched.`);
     } else {
-      notificationService.success(
-        "Marked as Watched",
-        `"${movie.Title}" has been marked as watched.`,
-      );
+      notificationService.success("Marked as Watched", `"${movie.Title}" has been marked as watched.`);
     }
   }
 
@@ -130,18 +112,13 @@ function Watchlist() {
       return;
     }
 
-    const updatedMovies = movies.filter(
-      (movie) => movie.imdbID !== movieToRemove.imdbID,
-    );
+    const updatedMovies = movies.filter((movie) => movie.imdbID !== movieToRemove.imdbID);
 
     setMovies(updatedMovies);
 
     removeMovie(movieToRemove.imdbID);
 
-    notificationService.success(
-      "Movie Removed",
-      `"${movieToRemove.Title}" has been removed from your watchlist.`,
-    );
+    notificationService.success("Movie Removed",`"${movieToRemove.Title}" has been removed from your watchlist.`);
 
     setMovieToRemove(null);
   }
@@ -197,18 +174,12 @@ function Watchlist() {
 
         {filteredMovies.length === 0 ? (
           <EmptyState
-            description={
-              movies.length === 0
-                ? "Your watchlist is empty."
-                : "No movies match the selected filters."
-            }
+            description={movies.length === 0 ? "Your watchlist is empty." : "No movies match the selected filters."}
           />
         ) : (
           <Row gutter={[24, 24]}>
             {filteredMovies.map((movie) => {
-              const watchlistMovie = watchlist.find(
-                (item) => item.imdbID === movie.imdbID,
-              );
+              const watchlistMovie = watchlist.find((item) => item.imdbID === movie.imdbID);
 
               return (
                 <Col key={movie.imdbID} xs={24} sm={12} md={8} lg={6}>

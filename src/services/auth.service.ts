@@ -11,7 +11,6 @@ export function isAuthenticated(): boolean {
 // Returns all registered users.
 export function getUsers(): User[] {
   const users = localStorage.getItem(USERS_KEY);
-
   return users ? JSON.parse(users) : [];
 }
 
@@ -23,7 +22,6 @@ export function saveUsers(users: User[]) {
 // Returns the currently logged-in user.
 export function getCurrentUser(): User | null {
   const user = localStorage.getItem(CURRENT_USER_KEY);
-
   return user ? JSON.parse(user) : null;
 }
 
@@ -36,11 +34,10 @@ export function saveCurrentUser(user: User) {
 export function updateUser(user: User) {
   const users = getUsers();
 
-  const updatedUsers = users.map((existingUser) =>
-    existingUser.email === user.email ? user : existingUser
-  );
+  const updatedUsers = users.map((existingUser) => existingUser.email === user.email ? user : existingUser);
 
   saveUsers(updatedUsers);
+
   saveCurrentUser(user);
 }
 
@@ -53,9 +50,7 @@ export function clearCurrentUser() {
 export function signup(email: string): boolean {
   const users = getUsers();
 
-  const alreadyExists = users.some(
-    (user) => user.email.toLowerCase() === email.toLowerCase()
-  );
+  const alreadyExists = users.some((user) => user.email.toLowerCase() === email.toLowerCase());
 
   if (alreadyExists) {
     return false;
@@ -79,9 +74,7 @@ export function signup(email: string): boolean {
 export function login(email: string): boolean {
   const users = getUsers();
 
-  const user = users.find(
-    (user) => user.email.toLowerCase() === email.toLowerCase()
-  );
+  const user = users.find((user) => user.email.toLowerCase() === email.toLowerCase());
 
   if (!user) {
     return false;

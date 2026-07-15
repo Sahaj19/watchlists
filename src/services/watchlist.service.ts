@@ -4,15 +4,12 @@ import { getCurrentUser, updateUser } from './auth.service';
 // Returns the current user's watchlist.
 export function getWatchlist(): WatchlistMovie[] {
   const user = getCurrentUser();
-
   return user?.watchlist ?? [];
 }
 
 // Returns true if the movie is already in the watchlist.
 export function isMovieInWatchlist(imdbID: string): boolean {
-  return getWatchlist().some(
-    (movie) => movie.imdbID === imdbID
-  );
+  return getWatchlist().some((movie) => movie.imdbID === imdbID);
 }
 
 // Adds a movie to the watchlist.
@@ -45,9 +42,7 @@ export function removeMovie(imdbID: string): boolean {
     return false;
   }
 
-  user.watchlist = user.watchlist.filter(
-    (movie) => movie.imdbID !== imdbID
-  );
+  user.watchlist = user.watchlist.filter((movie) => movie.imdbID !== imdbID);
 
   updateUser(user);
 
@@ -62,9 +57,7 @@ export function toggleWatched(imdbID: string): boolean {
     return false;
   }
 
-  const movie = user.watchlist.find(
-    (movie) => movie.imdbID === imdbID
-  );
+  const movie = user.watchlist.find((movie) => movie.imdbID === imdbID);
 
   if (!movie) {
     return false;

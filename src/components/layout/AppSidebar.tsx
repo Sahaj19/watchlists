@@ -1,24 +1,6 @@
 import { useState } from "react";
-import {
-  HomeOutlined,
-  HeartOutlined,
-  UserOutlined,
-  BulbOutlined,
-  LoginOutlined,
-  LogoutOutlined,
-  UserAddOutlined,
-  CloseOutlined
-} from "@ant-design/icons";
-import {
-  Button,
-  Divider,
-  Flex,
-  Menu,
-  Switch,
-  Typography,
-  Badge,
-  Avatar,
-} from "antd";
+import { HomeOutlined, HeartOutlined, UserOutlined, BulbOutlined, LoginOutlined, LogoutOutlined, UserAddOutlined, CloseOutlined } from "@ant-design/icons";
+import { Button, Divider, Flex, Menu, Switch, Typography, Badge, Avatar } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthenticationRequiredModal from "../auth/AuthenticationRequiredModal";
 import ConfirmationDialog from "../common/ConfirmationDialog";
@@ -56,13 +38,7 @@ function AppSidebar({ onClose }: AppSidebarProps) {
       label: (
         <Flex justify="space-between" align="center" style={{ width: "100%" }}>
           <span>My Watchlist</span>
-
-          <Badge
-            count={watchlist.length}
-            color={colors.primary}
-            style={{ boxShadow: "none" }}
-            size="medium"
-          />
+          <Badge count={watchlist.length} color={colors.primary} style={{ boxShadow: "none" }} size="medium" />
         </Flex>
       ),
     },
@@ -84,62 +60,25 @@ function AppSidebar({ onClose }: AppSidebarProps) {
     logout();
     navigate("/");
     setShowLogoutConfirmation(false);
-    notificationService.success(
-      "Logged Out",
-      "You have successfully logged out.",
-    );
+    notificationService.success("Logged Out", "You have successfully logged out.");
   }
 
   const userInitials = currentUser?.email?.charAt(0).toUpperCase();
 
   return (
     <>
-      <Flex
-        vertical
-        justify="space-between"
-        style={{
-          height: "100%",
-          minHeight: "100%",
-          background: colors.sidebar,
-        }}
-      >
+      <Flex vertical justify="space-between" style={{ height: "100%", minHeight: "100%", background: colors.sidebar }}>
         <Flex vertical justify="space-between" style={{ height: "100%" }}>
           <Flex vertical>
             {/* Logo */}
-            <Flex
-              justify="space-between"
-              align="flex-start"
-              style={{
-                padding: 24,
-              }}
-            >
+            <Flex justify="space-between" align="flex-start" style={{ padding: 24 }}>
               <Flex vertical>
-                <Title
-                  level={3}
-                  style={{
-                    margin: 0,
-                    color: colors.textPrimary,
-                  }}
-                >
-                🎬 {APP_NAME}
-                </Title>
-
-                <Text
-                  type="secondary"
-                  style={{
-                    color: colors.textSecondary,
-                  }}
-                >
-                  Find your next favourite movie.
-                </Text>
+                <Title level={3} style={{ margin: 0, color: colors.primary }}>{APP_NAME}</Title>
+                <Text type="secondary" style={{ color: colors.textSecondary }}>Find your next favourite movie.</Text>
               </Flex>
 
               {onClose && (
-                <Button
-                  type="text"
-                  icon={<CloseOutlined />}
-                  onClick={onClose}
-                />
+                <Button type="text" icon={<CloseOutlined />} onClick={onClose} />
               )}
             </Flex>
 
@@ -152,35 +91,17 @@ function AppSidebar({ onClose }: AppSidebarProps) {
               selectedKeys={[location.pathname]}
               items={menuItems}
               onClick={handleMenuClick}
-              style={{
-                border: "none",
-                marginTop: 12,
-                background: colors.sidebar,
-              }}
+              style={{ border: "none", marginTop: 12, background: colors.sidebar }}
             />
 
             <Divider />
 
             {/* Theme */}
-            <Flex
-              justify="space-between"
-              align="center"
-              style={{
-                padding: "0 24px",
-              }}
-            >
+            <Flex justify="space-between" align="center" style={{ padding: "0 24px" }}>
               <Flex align="center" gap={8}>
                 <BulbOutlined style={{ color: colors.textPrimary }} />
-
-                <Text
-                  style={{
-                    color: colors.textPrimary,
-                  }}
-                >
-                  Dark Mode
-                </Text>
+                <Text style={{ color: colors.textPrimary }}>Dark Mode</Text>
               </Flex>
-
               <Switch checked={themeMode === "dark"} onChange={toggleTheme} />
             </Flex>
           </Flex>
@@ -188,73 +109,22 @@ function AppSidebar({ onClose }: AppSidebarProps) {
           <Flex vertical>
             <Divider />
             {/* User */}
-            <Flex
-              vertical
-              gap={12}
-              style={{
-                padding: 24,
-              }}
-            >
+            <Flex vertical gap={12} style={{ padding: 24 }}>
               <Flex align="center" gap={8}>
-                <Avatar
-                  size={30}
-                  style={{
-                    background: colors.primary,
-                    color: "#fff",
-                    fontWeight: 600,
-                  }}
-                >
-                  {isAuthenticated ? userInitials : <UserOutlined />}
-                </Avatar>
+                <Avatar size={30} style={{ background: colors.primary, color: colors.white, fontWeight: 600 }}>{isAuthenticated ? userInitials : <UserOutlined />}</Avatar>
 
                 <Flex vertical>
-                  <Text
-                    strong
-                    style={{
-                      color: colors.textPrimary,
-                    }}
-                  >
-                    {currentUser?.email ?? "Guest"}
-                  </Text>
-
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: colors.textSecondary,
-                    }}
-                  >
-                    {isAuthenticated ? "Signed in" : "Not signed in"}
-                  </Text>
+                  <Text strong style={{ color: colors.textPrimary }}>{currentUser?.email ?? "Guest"}</Text>
+                  <Text style={{ fontSize: 12, color: colors.textSecondary }}>{isAuthenticated ? "Signed in" : "Not signed in"}</Text>
                 </Flex>
               </Flex>
 
               {isAuthenticated ? (
-                <Button
-                  danger
-                  block
-                  onClick={() => setShowLogoutConfirmation(true)}
-                  icon={<LogoutOutlined />}
-                >
-                  Logout
-                </Button>
+                <Button danger block icon={<LogoutOutlined />} onClick={() => setShowLogoutConfirmation(true)}>Logout</Button>
               ) : (
                 <>
-                  <Button
-                    type="primary"
-                    block
-                    onClick={() => navigate("/login")}
-                    icon={<LoginOutlined />}
-                  >
-                    Login
-                  </Button>
-
-                  <Button
-                    block
-                    onClick={() => navigate("/signup")}
-                    icon={<UserAddOutlined />}
-                  >
-                    Create Account
-                  </Button>
+                  <Button type="primary" block icon={<LoginOutlined />} onClick={() => navigate("/login")}>Login</Button>
+                  <Button block icon={<UserAddOutlined />} onClick={() => navigate("/signup")}> Create Account</Button>
                 </>
               )}
             </Flex>

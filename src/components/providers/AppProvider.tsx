@@ -8,22 +8,15 @@ function AppProvider() {
   return (
     <ConfigProvider
       theme={{
-        algorithm:
-          themeMode === "dark"
-            ? theme.darkAlgorithm
-            : theme.defaultAlgorithm,
+        algorithm: themeMode === "dark" ? theme.darkAlgorithm : theme.defaultAlgorithm,
 
         token: {
           colorPrimary: colors.primary,
-
           colorBgLayout: colors.background,
           colorBgContainer: colors.surface,
-
           colorText: colors.textPrimary,
           colorTextSecondary: colors.textSecondary,
-
           colorBorder: colors.border,
-
           colorSuccess: colors.success,
           colorWarning: colors.warning,
           colorError: colors.error,

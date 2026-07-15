@@ -9,7 +9,7 @@ function StandaloneLayout() {
 
   return (
     <Layout style={{ minHeight: '100vh', background: colors.background }}>
-      <Content style={{ background: colors.background, padding: 24 }}>
+      <Content style={{ background: colors.background }}>
         <Outlet />
       </Content>
     </Layout>

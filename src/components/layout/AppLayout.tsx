@@ -18,7 +18,7 @@ function AppLayout() {
     <Layout style={{ minHeight: "100vh", background: colors.background }}>
       {/* Desktop Sidebar */}
       {isDesktop && (
-        <Sider width={260} theme="light">
+        <Sider width={260} theme="light" style={{ height: "100vh", position: "sticky", top: 0 }}>
           <AppSidebar />
         </Sider>
       )}

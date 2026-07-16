@@ -21,7 +21,7 @@ function WatchlistMovieCard({ movie, watched, onViewDetails, onToggleWatched, on
   return (
     <Card
       hoverable
-      style={{ width: 290, borderRadius: 8 }}
+      style={{ width: "100%", borderRadius: 8 }}
       cover={
         watched ? (
           <Badge.Ribbon text="Watched" color={colors.green}>{cover}</Badge.Ribbon>

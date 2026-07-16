@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Image } from 'antd';
 import noPoster from '../../assets/images/no-poster.png';
+import { MOVIE_CARD_WIDTH, MOVIE_POSTER_HEIGHT } from '../../utils/constants';
 
 interface PosterProps {
   src: string;
@@ -10,7 +11,7 @@ interface PosterProps {
   borderRadius?: number;
 }
 
-function Poster({ src, alt, height = 380, width = 290, borderRadius = 8 }: PosterProps) {
+function Poster({ src, alt, height = MOVIE_POSTER_HEIGHT, width = MOVIE_CARD_WIDTH, borderRadius = 8 }: PosterProps) {
   const [imageError, setImageError] = useState(false);
 
   return (

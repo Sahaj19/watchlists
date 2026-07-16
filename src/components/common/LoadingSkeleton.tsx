@@ -1,20 +1,45 @@
-import { Card, Skeleton, Col, Row } from 'antd';
+import { Card, Skeleton, Flex, Grid } from "antd";
+import { MOVIE_CARD_WIDTH, MOVIE_POSTER_HEIGHT } from "../../utils/constants";
+
+const { useBreakpoint } = Grid;
 
 interface LoadingSkeletonProps {
   count?: number;
 }
 
 function LoadingSkeleton({ count = 8 }: LoadingSkeletonProps) {
+  const screens = useBreakpoint();
   return (
-    <Row gutter={[24, 24]}>
+    <Flex wrap gap={24} justify={screens.lg ? "flex-start" : "center"}>
       {Array.from({ length: count }).map((_, index) => (
-        <Col key={index} xs={24} sm={12} md={8} lg={8} xl={6} xxl={4}>
-          <Card cover={<Skeleton.Image active style={{ width: 290, height: 380 }}/>}>
-            <Skeleton active paragraph={{ rows: 2 }}/>
+        <Flex
+          key={index}
+          style={{
+            width: MOVIE_CARD_WIDTH,
+            flexShrink: 0,
+          }}
+        >
+          <Card
+            style={{
+              width: "100%",
+              borderRadius: 8,
+              overflow: "hidden",
+            }}
+            cover={
+              <Skeleton.Image
+                active
+                style={{
+                  width: MOVIE_CARD_WIDTH,
+                  height: MOVIE_POSTER_HEIGHT,
+                }}
+              />
+            }
+          >
+            <Skeleton active paragraph={{ rows: 2 }} />
           </Card>
-        </Col>
+        </Flex>
       ))}
-    </Row>
+    </Flex>
   );
 }
 

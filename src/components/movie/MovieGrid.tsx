@@ -1,22 +1,35 @@
-import { Col, Row, Flex } from 'antd';
-import MovieCard from './MovieCard';
-import type { MovieSummary } from '../../types/movie.types';
+import { Flex, Grid } from "antd";
+import MovieCard from "./MovieCard";
+import type { MovieSummary } from "../../types/movie.types";
+import { MOVIE_CARD_WIDTH } from "../../utils/constants";
+
+const { useBreakpoint } = Grid;
 
 interface MovieGridProps {
   movies: MovieSummary[];
 }
 
 function MovieGrid({ movies }: MovieGridProps) {
+  const screens = useBreakpoint();
+
   return (
-    <Row gutter={[24, 24]}>
+    <Flex
+      wrap
+      gap={24}
+      justify={screens.lg ? "flex-start" : "center"}
+    >
       {movies.map((movie) => (
-        <Col key={movie.imdbID} xs={24} sm={12} md={8} lg={8} xl={6} xxl={4}>
-          <Flex justify="center">
-            <MovieCard movie={movie} />
-          </Flex>
-        </Col>
+        <Flex
+          key={movie.imdbID}
+          style={{
+            width: MOVIE_CARD_WIDTH,
+            flexShrink: 0,
+          }}
+        >
+          <MovieCard movie={movie} />
+        </Flex>
       ))}
-    </Row>
+    </Flex>
   );
 }
 

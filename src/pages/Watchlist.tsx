@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Flex, Row, Col } from "antd";
+import { Flex, Grid } from "antd";
 import { useNavigate } from "react-router-dom";
 import usePageTitle from "../hooks/usePageTitle";
 import LoadingSkeleton from "../components/common/LoadingSkeleton";
@@ -14,9 +14,13 @@ import { notificationService } from "../services/notification.service";
 import { applyWatchlistFilters } from "../utils/watchlistFiltersLogic";
 import ErrorState from "../components/common/ErrorState";
 import PageBanner from "../components/common/PageBanner";
+import { MOVIE_CARD_WIDTH } from "../utils/constants";
+
+const { useBreakpoint } = Grid;
 
 function Watchlist() {
   usePageTitle("Watchlists | My Watchlist");
+  const screens = useBreakpoint();
   const navigate = useNavigate();
   const { watchlist, removeMovie, toggleWatched } = useWatchlist();
   const [error, setError] = useState(false);
@@ -177,12 +181,25 @@ function Watchlist() {
             description={movies.length === 0 ? "Your watchlist is empty." : "No movies match the selected filters."}
           />
         ) : (
-          <Row gutter={[24, 24]}>
+          <Flex
+            wrap
+            gap={24}
+            justify={screens.lg ? "flex-start" : "center"}
+            align="stretch"
+          >
             {filteredMovies.map((movie) => {
-              const watchlistMovie = watchlist.find((item) => item.imdbID === movie.imdbID);
+              const watchlistMovie = watchlist.find(
+                (item) => item.imdbID === movie.imdbID,
+              );
 
               return (
-                <Col key={movie.imdbID} xs={24} sm={12} md={8} lg={6}>
+                <Flex
+                  key={movie.imdbID}
+                  style={{
+                    width: MOVIE_CARD_WIDTH,
+                    flexShrink: 0,
+                  }}
+                >
                   <WatchlistMovieCard
                     movie={movie}
                     watched={watchlistMovie?.watched ?? false}
@@ -190,10 +207,10 @@ function Watchlist() {
                     onToggleWatched={handleToggleWatched}
                     onRemove={handleRemove}
                   />
-                </Col>
+                </Flex>
               );
             })}
-          </Row>
+          </Flex>
         )}
       </Flex>
 

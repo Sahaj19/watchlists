@@ -74,7 +74,7 @@ function MovieCard({ movie }: MovieCardProps) {
     <>
       <Card
         hoverable
-        style={{ width: 290 }}
+        style={{ width: "100%", borderRadius: 8 }}
         cover={
           isSaved ? (
             <Badge.Ribbon

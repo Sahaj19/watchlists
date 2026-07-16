@@ -38,10 +38,7 @@ function MovieDetails() {
     } catch {
       setMovie(null);
       setError(true);
-      notificationService.error(
-        "Unable to Load Movie",
-        "Please try again later.",
-      );
+      notificationService.error("Unable to Load Movie", "Please try again later.");
     } finally {
       setLoading(false);
     }

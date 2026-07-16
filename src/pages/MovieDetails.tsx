@@ -65,8 +65,8 @@ function MovieDetails() {
   if (error) {
     return (
       <ErrorState
-        title="Unable to Load Movie"
-        description="Please try again later."
+        title="Unable to Load Movie Details"
+        description="Something went wrong while loading the movie details. Please check your internet connection and try again. If the issue continues, please try again later."
         onRetry={fetchMovie}
       />
     );

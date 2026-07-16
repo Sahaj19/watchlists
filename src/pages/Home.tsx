@@ -73,7 +73,7 @@ function Home() {
     return (
       <ErrorState
         title="Unable to Load Movies"
-        description="Please check your internet connection and try again."
+        description="Something went wrong while loading movies. Please check your internet connection and try again. If the issue continues, please try again later."
         onRetry={() => fetchMovies(currentPage)}
       />
     );

@@ -15,7 +15,7 @@ function ErrorState({ title = 'Something went wrong', description = 'Please try 
       <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={false} />
       <Flex  vertical align="center" gap={4}>
         <Text strong>{title}</Text>
-        <Text type="secondary">{description}</Text>
+        <Text type="secondary" style={{ textAlign: "center" }}>{description}</Text>
       </Flex>
 
       {onRetry && (

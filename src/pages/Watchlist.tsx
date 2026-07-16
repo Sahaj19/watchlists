@@ -145,7 +145,7 @@ function Watchlist() {
     return (
       <ErrorState
         title="Unable to Load Watchlist"
-        description="Something went wrong while loading your watchlist."
+        description="Something went wrong while loading your watchlist. Please check your internet connection and try again. If the issue continues, please try again later."
         onRetry={loadMovies}
       />
     );

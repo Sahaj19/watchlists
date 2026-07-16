@@ -7,6 +7,7 @@ import Poster from "../common/Poster";
 import { notificationService } from "../../services/notification.service";
 import type { MovieDetails } from "../../types/movie.types";
 import { useTheme } from "../../hooks/useTheme";
+import { useAuth } from "../../hooks/useAuth";
 
 const { Title, Paragraph } = Typography;
 const { useBreakpoint } = Grid;
@@ -17,6 +18,7 @@ interface MovieHeroProps {
 }
 
 function MovieHero({ movie, onReadMore }: MovieHeroProps) {
+  const { isAuthenticated } = useAuth();
   const { colors } = useTheme();
   const screens = useBreakpoint();
   const [showRemoveConfirmation, setShowRemoveConfirmation] = useState(false);
@@ -59,10 +61,10 @@ function MovieHero({ movie, onReadMore }: MovieHeroProps) {
 
         <Flex vertical style={{ flex: 1, minHeight: 380, width: "100%" }}>
           {/* Title */}
-          <Title level={2} style={{ marginTop: 0, marginBottom: 24 }}>{movie.Title}</Title>
+          <Title level={2} style={{ marginTop: 0, marginBottom: 24, textAlign: screens.md ? "left" : "center" }}>{movie.Title}</Title>
 
           {/* Genres */}
-          <Flex wrap gap={8} style={{ marginBottom: 24 }}>
+          <Flex wrap gap={8} style={{ marginBottom: 24 }} justify={screens.md ? "flex-start" : "center"}>
             {movie.Genre.split(", ").map((genre) => (
               <Tag key={genre} icon={<TagsOutlined />}>
                 {genre}
@@ -99,12 +101,12 @@ function MovieHero({ movie, onReadMore }: MovieHeroProps) {
 
           {/* Actions */}
           <Flex wrap gap={12} justify={screens.md ? "flex-start" : "center"}>
-            {isSaved ? (
-              <Button danger icon={<DeleteOutlined />} onClick={() => setShowRemoveConfirmation(true)}>Remove from Watchlist</Button>
-            ) : (
-              <Button type="primary" icon={<HeartOutlined />}  onClick={handleAddMovie}>Save to Watchlist</Button>
-            )}
-
+            {isAuthenticated &&
+              (isSaved ? (
+                <Button danger icon={<DeleteOutlined />} onClick={() => setShowRemoveConfirmation(true)}>Remove from Watchlist</Button>
+              ) : (
+                <Button type="primary" icon={<HeartOutlined />} onClick={handleAddMovie}>Save to Watchlist</Button>
+            ))}
             <Button
               icon={<ExportOutlined />}
               href={`https://www.imdb.com/title/${movie.imdbID}`}

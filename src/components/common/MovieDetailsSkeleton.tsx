@@ -13,15 +13,15 @@ function MovieDetailsSkeleton() {
 
       {/* Hero Section */}
       <Card styles={{ body: { padding: 0 } }}>
-        <Flex vertical={!screens.md} gap={32} style={{ padding: screens.md ? 32 : 16 }}>
+        <Flex vertical={!screens.md} gap={32} style={{ padding: screens.md ? 32 : 16 }} align={screens.md ? "flex-start" : "center"}>
           <Skeleton.Image active style={{ width: MOVIE_CARD_WIDTH, height: MOVIE_POSTER_HEIGHT }} />
 
-          <Flex vertical style={{ flex: 1, minHeight: MOVIE_POSTER_HEIGHT }}>
+          <Flex vertical style={{ flex: 1, minHeight: MOVIE_POSTER_HEIGHT, width: "100%" }}>
             {/* Title */}
-            <Skeleton.Input active style={{ width: "60%", height: 36, marginBottom: 24 }} />
+            <Skeleton.Input active style={{ width: "100%", height: 36, marginBottom: 24 }} />
 
             {/* Genres */}
-            <Flex wrap gap={8} style={{ marginBottom: 24 }}>
+            <Flex wrap gap={8} style={{ marginBottom: 24 }} justify={screens.md ? "flex-start" : "center"}>
               <Skeleton.Button active size="small" />
               <Skeleton.Button active size="small" />
               <Skeleton.Button active size="small" />
@@ -34,7 +34,7 @@ function MovieDetailsSkeleton() {
             </Card>
 
             {/* Buttons */}
-            <Flex wrap gap={12}>
+            <Flex wrap gap={12} justify={screens.md ? "flex-start" : "center"}>
               <Skeleton.Button active style={{ width: 190 }} />
               <Skeleton.Button active style={{ width: 150 }} />
               <Skeleton.Button active style={{ width: 130 }} />
